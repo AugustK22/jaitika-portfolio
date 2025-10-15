@@ -1,0 +1,205 @@
+/* src/pages/sphere.css */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Sacramento&display=swap");
+
+/* Page */
+.sphere-page {
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background: var(--gradient-background);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.sphere-page .container {
+  position: relative;
+  z-index: 2;
+  max-width: var(--grid-max, 1400px);
+  margin: 0 auto;
+  padding: 0 var(--gutter, 40px);
+}
+
+/* Header */
+.sphere-page .page-header { padding: 56px 0 20px 0; text-align: center; }
+.sphere-page .kicker { font-family: var(--font-script); color: var(--accent-blue); font-size: 1.7rem; margin-bottom: 6px; opacity: .95; }
+.sphere-page h1 { font-family: var(--font-heading); color: var(--text-heading); font-size: 3.6rem; line-height: 1.1; margin-bottom: 10px; }
+.sphere-page .subtitle { color: var(--accent-gold); letter-spacing: 2px; text-transform: uppercase; font-weight: 500; font-size: .95rem; }
+.sphere-page .intro { max-width: 900px; margin: 16px auto 0 auto; color: var(--text-secondary); line-height: 1.9; font-size: 1.08rem; }
+
+/* Contact slab */
+.sphere-page .contact-slab {
+  margin: 28px auto 44px auto;
+  max-width: 1100px;
+  background: var(--surface-card);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid var(--surface-border);
+  border-radius: var(--radius-lg, 22px);
+  box-shadow: var(--card-shadow);
+  padding: 18px 22px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: center;
+}
+.sphere-page .contact-grid { display: flex; flex-wrap: wrap; gap: 14px 30px; align-items: center; }
+.sphere-page .c-item { display: flex; flex-direction: column; }
+.sphere-page .c-item strong { color: var(--text-heading); }
+.sphere-page .c-item small { color: var(--text-muted); }
+.sphere-page .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.sphere-page .pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: var(--accent-gold);
+  color: var(--text-inverse);
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: .3px;
+  border: 1px solid transparent;
+  box-shadow: var(--button-shadow);
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+.sphere-page .pill:hover { transform: translateY(-2px); box-shadow: var(--card-shadow-hover); }
+.sphere-page .pill.secondary { background: var(--button-background); color: var(--button-text); border-color: var(--button-border); }
+
+/* Grid & cards */
+.sphere-page .grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 28px; }
+.sphere-page .card {
+  background: var(--surface-card);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-xl, 28px);
+  border: 1px solid var(--surface-border);
+  box-shadow: var(--card-shadow);
+  padding: 28px;
+}
+.sphere-page .card h2 { font-family: var(--font-heading); color: var(--text-heading); font-size: 1.6rem; margin-bottom: 14px; }
+.sphere-page .line { height: 1px; background: linear-gradient(90deg, transparent, var(--surface-border), transparent); margin: 10px 0 18px 0; }
+
+/* Timeline */
+.sphere-page .timeline { position: relative; margin: 6px 0 0 0; }
+.sphere-page .tl-row { display: grid; grid-template-columns: 180px 1fr; gap: 18px; align-items: start; padding: 10px 0; position: relative; }
+.sphere-page .tl-row + .tl-row { border-top: 1px dashed var(--surface-border); }
+.sphere-page .tl-when { font-weight: 600; color: var(--text-heading); white-space: nowrap; }
+.sphere-page .tl-dot { position: absolute; left: 171px; top: 18px; width: 10px; height: 10px; border-radius: 50%; background: var(--accent-gold); box-shadow: 0 0 0 3px var(--surface-glow); }
+.sphere-page .tl-body h3 { font-size: 1.05rem; color: var(--text-heading); margin-bottom: 4px; }
+.sphere-page .tl-body .sub { font-size: .94rem; color: var(--text-secondary); margin-bottom: 6px; }
+.sphere-page .badge { display: inline-block; padding: 6px 10px; border-radius: 999px; background: var(--surface-overlay); border: 1px solid var(--surface-border); font-size: .82rem; color: var(--text-secondary); margin-right: 6px; }
+
+/* Skills */
+.sphere-page .skill-list { display: grid; gap: 12px; }
+.sphere-page .skill { display: grid; grid-template-columns: 190px 1fr; gap: 16px; align-items: start; padding: 12px; border-radius: 14px; background: var(--surface-highlight); border: 1px solid var(--surface-border); }
+.sphere-page .skill:hover { background: var(--surface-glow); }
+.sphere-page .skill-title { font-weight: 700; color: var(--text-heading); }
+.sphere-page .skill-desc { color: var(--text-secondary); line-height: 1.7; }
+
+/* Lists */
+.sphere-page .list { display: grid; gap: 14px; }
+.sphere-page .item h3 { font-size: 1.03rem; color: var(--text-heading); margin-bottom: 4px; }
+.sphere-page .item p { color: var(--text-secondary); line-height: 1.7; }
+
+/* Responsive & etc. */
+@media print { .sphere-page .cta .pill.secondary { display: none !important; } .sphere-page { background: #fff; } .sphere-page .card, .sphere-page .contact-slab { box-shadow: none; border-color: #ddd; background: #fff; } .sphere-page .grid { grid-template-columns: 1fr; } .sphere-page .container { max-width: 900px; } }
+@media (max-width: 1040px) { .sphere-page .grid { grid-template-columns: 1fr; } }
+@media (max-width: 720px) { .sphere-page h1 { font-size: 2.6rem; } .sphere-page .contact-slab { grid-template-columns: 1fr; } .sphere-page .tl-row { grid-template-columns: 140px 1fr; } .sphere-page .tl-dot { left: 131px; } .sphere-page .skill { grid-template-columns: 1fr; } }
+.contact-slab a { color: var(--accent-blue); text-decoration: none; transition: all 0.25s ease; }
+.contact-slab a:hover { color: var(--accent-pink); }
+
+/* src/pages/sphere.css */
+
+/* ... (keep all other styles in the file) ... */
+
+/* === REPLACE THE OLD PILL STYLES WITH THIS BLOCK === */
+
+.sphere-page .pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: .3px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(8px); /* Adds the glass effect */
+}
+
+/* Primary Pill (Email & Download buttons) */
+.sphere-page .pill {
+  background: linear-gradient(135deg, var(--surface-highlight), var(--surface-glow));
+  color: var(--accent-blue);
+  border: 1px solid var(--surface-border);
+  box-shadow: none; /* Remove the heavy shadow */
+}
+
+.sphere-page .pill:hover {
+  color: var(--accent-pink);
+  border-color: var(--surface-border-strong);
+  box-shadow: 0 0 12px var(--surface-highlight);
+  transform: translateY(-2px);
+}
+
+/* Secondary Pill (LinkedIn button) */
+.sphere-page .pill.secondary {
+  background: transparent;
+  color: var(--accent-blue);
+  border: 1px solid var(--surface-border-strong);
+}
+
+.sphere-page .pill.secondary:hover {
+  background: var(--surface-highlight);
+  color: var(--accent-pink);
+  border-color: var(--accent-pink);
+}
+
+/* src/pages/sphere.css */
+
+/* ... (keep all other styles) ... */
+
+
+/* === REPLACE THE OLD CTA PANEL STYLES WITH THIS BLOCK === */
+
+/* CTA panel */
+.sphere-page .cta-panel {
+  max-width: 900px; /* Constrain the width */
+  margin: 40px auto 70px auto; /* Center the panel on the page */
+  text-align: center;
+  background: var(--surface-card); /* Use theme variable for background */
+  backdrop-filter: blur(10px); /* Add glass effect */
+  border-radius: var(--radius-xl, 28px); /* Consistent border radius */
+  border: 1px solid var(--surface-border); /* Consistent border */
+  box-shadow: var(--card-shadow); /* Consistent shadow */
+  padding: 40px 30px; /* Add internal padding */
+}
+
+.sphere-page .cta-panel h3 {
+  font-family: var(--font-heading);
+  color: var(--text-heading);
+  font-size: 1.8rem; /* Slightly larger heading */
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.sphere-page .cta-panel p {
+  max-width: 760px;
+  margin: 0 auto;
+  color: var(--text-secondary);
+  line-height: 1.85;
+  margin-bottom: 24px; /* More space before buttons */
+}
+
+.sphere-page .cta-panel .actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ... (keep the rest of the file) ... */
+
+/* ... (keep all other styles after this) ... */

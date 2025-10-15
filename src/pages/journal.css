@@ -1,0 +1,332 @@
+/* src/pages/journal.css */
+@import url("https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap");
+
+:root {
+  /* --font-display: 'Cormorant', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-script: 'Crimson Pro', serif; */
+  --max-width: 100%;
+  --spacing: 10px;
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+  
+  /* Dark mode colors (default) */
+  --journal-bg-start: #0a0e1a;
+  --journal-bg-mid: #1a1f35;
+  --journal-text-bright: #ffffff;
+  --journal-text-main: #e2e8f0;
+  --journal-text-muted: #94a3b8;
+  --journal-text-dim: #64748b;
+  --journal-pink: #f4b1c2;
+  --journal-pink-glow: rgba(244, 177, 194, 0.3);
+  --journal-teal: #7dd3c0;
+  --journal-teal-glow: rgba(125, 211, 192, 0.3);
+  --journal-gold: #f4d19b;
+  --journal-gold-glow: rgba(244, 209, 155, 0.3);
+  --journal-glass-bg: rgba(255, 255, 255, 0.05);
+  --journal-glass-hover: rgba(255, 255, 255, 0.08);
+  --journal-glass-border: rgba(255, 255, 255, 0.08);
+  --journal-shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --journal-shadow-heavy: 0 8px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Light mode - triggered by system preference */
+@media (prefers-color-scheme: light) {
+  :root {
+    --journal-bg-start: #f8fafc;
+    --journal-bg-mid: #e2e8f0;
+    --journal-text-bright: #0f172a;
+    --journal-text-main: #334155;
+    --journal-text-muted: #64748b;
+    --journal-text-dim: #94a3b8;
+    --journal-pink: #db7093;
+    --journal-pink-glow: rgba(219, 112, 147, 0.2);
+    --journal-teal: #20b2aa;
+    --journal-teal-glow: rgba(32, 178, 170, 0.2);
+    --journal-gold: #daa520;
+    --journal-gold-glow: rgba(218, 165, 32, 0.2);
+    --journal-glass-bg: rgba(255, 255, 255, 0.7);
+    --journal-glass-hover: rgba(255, 255, 255, 0.9);
+    --journal-glass-border: rgba(0, 0, 0, 0.08);
+    --journal-shadow-soft: 0 2px 16px rgba(0, 0, 0, 0.08);
+    --journal-shadow-heavy: 0 4px 24px rgba(0, 0, 0, 0.12);
+  }
+}
+
+/* ============================================
+   ENHANCED LIQUID GLASS BACKGROUND
+   ============================================ */
+.journal-page {
+  /* Scope fonts to Journal only */
+--font-display: 'Cormorant', serif;
+--font-body: 'Inter', sans-serif;
+--font-script: 'Crimson Pro', serif;
+
+  position: relative;
+padding : 0px 100px;
+  min-height: 100vh;
+  /* NEW: Added a radial gradient for a "glow" effect */
+  background: radial-gradient(ellipse at top, var(--journal-bg-mid) 0%, var(--journal-bg-start) 100%);
+  color: var(--journal-text-main);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+.journal-page .container { max-width: var(--max-width); margin: 0 auto; padding: var(--spacing); position: relative; z-index: 2; }
+.journal-page .center { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: var(--spacing); }
+
+/* ============================================
+   STARFIELD
+   ============================================ */
+.journal-page .stars { position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.5; }
+.journal-page .star { position: absolute; width: 1px; height: 1px; background: #fff; border-radius: 50%; opacity: 0.7; animation: twinkle 4s ease-in-out infinite; }
+@keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 0.9; transform: scale(1.2); } }
+
+/* ============================================
+   LOADING & NOTICES
+   ============================================ */
+.loading { font-size: 1.5rem; font-family: var(--font-display); font-weight: 300; color: var(--journal-pink); letter-spacing: 0.05em; }
+.notice { max-width: 700px; background: var(--journal-glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--journal-glass-border); border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--journal-shadow-heavy); }
+.notice h2 { font-family: var(--font-display); font-size: 2rem; font-weight: 500; color: var(--journal-pink); margin: 0 0 16px; }
+.notice p { color: var(--journal-text-main); line-height: 1.7; margin-bottom: 12px; }
+.notice .code { margin-top: 20px; background: rgba(0, 0, 0, 0.4); padding: 20px; border-radius: var(--radius-sm); color: var(--journal-teal); font-size: 0.85rem; overflow: auto; border: 1px solid var(--journal-glass-border); }
+
+/* ============================================
+   AUTH GATE
+   ============================================ */
+.gate { width: 100%; max-width: 480px; background: var(--journal-glass-bg); backdrop-filter: blur(24px); border: 1px solid var(--journal-glass-border); border-radius: var(--radius-lg); padding: 48px 40px; text-align: center; box-shadow: var(--journal-shadow-heavy), 0 0 60px var(--journal-pink-glow); position: relative; overflow: hidden; }
+.gate::before { content: ''; position: absolute; inset: -100%; background: radial-gradient(circle at center, var(--journal-pink-glow) 0%, transparent 70%); opacity: 0.4; animation: float 8s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(10px, -10px) scale(1.1); } }
+.gate-icon { width: 64px; height: 64px; margin: 0 auto 20px; color: var(--journal-pink); filter: drop-shadow(0 0 20px var(--journal-pink-glow)); position: relative; z-index: 1; }
+.gate .title { font-family: var(--font-display); font-size: 2.5rem; font-weight: 500; color: var(--journal-text-bright); margin: 0 0 8px; letter-spacing: -0.02em; position: relative; z-index: 1; }
+.gate .subtitle { font-family: var(--font-script); font-style: italic; font-size: 1.1rem; color: var(--journal-pink); margin-bottom: 32px; opacity: 0.9; position: relative; z-index: 1; }
+
+/* ============================================
+   INPUTS & FORMS
+   ============================================ */
+.input { width: 100%; padding: 14px 18px; border-radius: var(--radius-sm); border: 1px solid var(--journal-glass-border); background: rgba(255, 255, 255, 0.08); color: var(--journal-text-bright); font-family: var(--font-body); font-size: 0.95rem; outline: none; margin-bottom: 16px; transition: all 0.3s ease; position: relative; z-index: 1; }
+.input::placeholder { color: var(--journal-text-dim); }
+.input:focus { background: rgba(255, 255, 255, 0.12); border-color: var(--journal-pink); box-shadow: 0 0 0 3px var(--journal-pink-glow); }
+.input:hover { background: rgba(255, 255, 255, 0.1); }
+.title-input { font-family: var(--font-display); font-size: 1.3rem; font-weight: 500; }
+.area { resize: vertical; min-height: 200px; font-family: var(--font-script); line-height: 1.8; }
+.error { color: #fca5a5; font-size: 0.9rem; margin: -8px 0 16px 0; text-align: left; position: relative; z-index: 1; }
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.btn { display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; padding: 12px 24px; font-weight: 600; font-family: var(--font-body); border: 1px solid transparent; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; z-index: 1; }
+.btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%); opacity: 0; transition: opacity 0.3s ease; }
+.btn:hover::before { opacity: 1; }
+.btn.primary { background: linear-gradient(135deg, var(--journal-pink) 0%, #e89bb0 100%); color: #0a0e1a; box-shadow: 0 8px 24px var(--journal-pink-glow), var(--journal-shadow-soft); }
+.btn.primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px var(--journal-pink-glow), var(--journal-shadow-heavy); }
+.btn.ghost { background: var(--journal-glass-bg); backdrop-filter: blur(12px); color: var(--journal-text-main); border-color: var(--journal-glass-border); }
+.btn.ghost:hover { background: var(--journal-glass-hover); border-color: var(--journal-teal); }
+.hint { margin-top: 16px; font-size: 0.85rem; color: var(--journal-text-muted); font-style: italic; position: relative; z-index: 1; }
+
+/* ============================================
+   TOP BAR & HERO
+   ============================================ */
+.topbar { display: flex; justify-content: space-between; align-items: center; margin: 0 0 48px; padding-bottom: 16px; border-bottom: 1px solid var(--journal-glass-border); }
+.brand { font-family: var(--font-display); font-size: 2rem; font-weight: 600; color: var(--journal-pink); letter-spacing: 0.05em; filter: drop-shadow(0 0 20px var(--journal-pink-glow)); }
+.logout { display: inline-flex; align-items: center; gap: 8px; color: var(--journal-text-muted); background: transparent; border: none; cursor: pointer; font-family: var(--font-body); font-size: 0.9rem; padding: 8px 12px; border-radius: var(--radius-sm); transition: all 0.3s ease; }
+.logout:hover { color: var(--journal-pink); background: var(--journal-glass-bg); }
+.hero { text-align: center; max-width: 900px; margin: 0 auto 30px auto; }
+.hero h1 { font-family: var(--font-display); font-size: 4rem; font-weight: 500; color: var(--journal-text-bright); margin: 0 0 16px; letter-spacing: -0.03em; line-height: 1.1; text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); }
+.tagline { font-family: var(--font-script); font-style: italic; font-size: 1.3rem; color: var(--journal-pink); margin-bottom: 20px; opacity: 0.95; }
+.lede { max-width: 700px; margin: 0 auto; color: var(--journal-text-muted); line-height: 1.8; font-size: 1.05rem; }
+
+/* ============================================
+   REFINED COMPOSER LAYOUT
+   ============================================ */
+.composer-wrap { margin: 0 0 32px; }
+.composer {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+  padding: 24px;
+}
+.new-btn {
+  width: 100%;
+  font-size: 1.1rem;
+  padding: 16px 24px;
+}
+.form-content {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--journal-glass-border);
+}
+.composer h3 { font-family: var(--font-display); font-size: 1.8rem; font-weight: 500; color: var(--journal-text-bright); margin: 0 0 24px; }
+.row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end; margin-top: 8px; }
+
+/* ============================================
+   SEARCH, SORT & FILTER CONTROLS
+   ============================================ */
+.controls-wrap { margin: 0 0 48px; }
+.controls {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
+.search-box {
+  position: relative;
+  margin-bottom: 20px;
+}
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: var(--journal-text-muted);
+  pointer-events: none;
+  z-index: 2;
+}
+.search-input {
+  padding-left: 48px !important;
+  margin-bottom: 0 !important;
+}
+.filters-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.filter-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.filter-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--journal-pink);
+  flex-shrink: 0;
+}
+.select-input {
+  flex: 1;
+  margin-bottom: 0 !important;
+}
+.results-count {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--journal-glass-border);
+  text-align: center;
+  color: var(--journal-text-muted);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* ============================================
+   BASE CARD STYLES
+   ============================================ */
+.card {
+  background: var(--journal-glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--journal-glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--journal-shadow-soft);
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+.card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: var(--journal-shadow-heavy);
+}
+
+/* ============================================
+   REFINED ENTRY CARDS
+   ============================================ */
+.stack { display: grid; gap: 24px; margin: 0 0 80px; }
+.empty { text-align: center; color: var(--journal-text-muted); font-style: italic; font-family: var(--font-script); padding: 80px 0; font-size: 1.1rem; }
+.entry {
+  padding: 28px;
+  border-left: 4px solid transparent;
+}
+.entry:hover::before { height: 100%; }
+.entry.accent-pink { border-left-color: var(--journal-pink); }
+.entry.accent-pink:hover { box-shadow: var(--journal-shadow-heavy), 0 0 40px var(--journal-pink-glow); }
+.entry.accent-teal { border-left-color: var(--journal-teal); }
+.entry.accent-teal:hover { box-shadow: var(--journal-shadow-heavy), 0 0 40px var(--journal-teal-glow); }
+.entry.accent-gold { border-left-color: var(--journal-gold); }
+.entry.accent-gold:hover { box-shadow: var(--journal-shadow-heavy), 0 0 40px var(--journal-gold-glow); }
+.entry-head { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; padding-bottom: 20px; border-bottom: 1px solid var(--journal-glass-border); }
+.entry-titles h2 { font-family: var(--font-display); font-size: 1.8rem; font-weight: 500; color: var(--journal-text-bright); margin: 0 0 8px; letter-spacing: -0.01em; }
+.entry-titles .muted { color: var(--journal-text-muted); font-style: italic; font-family: var(--font-script); font-size: 0.95rem; }
+.entry-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: var(--radius-sm); background: transparent; border: 1px solid var(--journal-glass-border); color: var(--journal-text-muted); cursor: pointer; transition: all 0.3s ease; }
+.icon-btn:hover { background: var(--journal-glass-hover); border-color: var(--journal-pink); color: var(--journal-pink); }
+.entry-body { margin-top: 20px; }
+.entry-body .content { white-space: pre-wrap; font-family: var(--font-script); color: var(--journal-text-main); line-height: 1.9; font-size: 1.05rem; }
+.readmore { margin-top: 16px; background: none; border: none; color: var(--journal-pink); display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-family: var(--font-body); cursor: pointer; transition: all 0.3s ease; padding: 8px 12px; border-radius: var(--radius-sm); }
+.readmore:hover { background: var(--journal-glass-bg); color: var(--journal-teal); }
+
+/* ============================================
+   RESPONSIVE & UTILITIES
+   ============================================ */
+@media (max-width: 768px) { 
+  .hero h1 { font-size: 2.5rem; } 
+  .journal-page .container { padding: 20px; } 
+  .gate { padding: 32px 24px; } 
+  .composer { padding: 24px; } 
+  .entry-head { flex-direction: column; gap: 12px; } 
+  .entry-actions { align-self: flex-start; }
+  .filters-row { grid-template-columns: 1fr; }
+}
+
+select.input { appearance: none; -webkit-appearance: none; -moz-appearance: none; background: rgba(255, 255, 255, 0.08) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='%23f4b1c2' viewBox='0 0 24 24'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 16px center; background-size: 16px; padding-right: 48px; cursor: pointer; transition: all 0.3s ease; }
+select.input:hover { background-color: var(--journal-glass-hover); border-color: var(--journal-pink); }
+select.input:focus { background: rgba(255, 255, 255, 0.12) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='%23f4b1c2' viewBox='0 0 24 24'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 16px center; background-size: 16px; }
+select.input option { background: var(--journal-bg-mid); color: var(--journal-text-main); font-family: var(--font-body); padding: 12px; }
+select.input option[value="memory-post"] { color: var(--journal-pink); }
+select.input option[value="philosophy-post"] { color: var(--journal-teal); }
+select.input option[value="freedom-post"] { color: var(--journal-gold); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--journal-glass-bg); border-radius: var(--radius-md); }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--journal-pink) 0%, var(--journal-teal) 100%); border-radius: var(--radius-md); border: 2px solid var(--journal-bg-start); box-shadow: 0 0 10px var(--journal-pink-glow), 0 0 10px var(--journal-teal-glow); }
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, var(--journal-teal) 0%, var(--journal-pink) 100%); box-shadow: 0 0 14px var(--journal-pink-glow), 0 0 14px var(--journal-teal-glow); }
+* { scrollbar-width: thin; scrollbar-color: var(--journal-pink) var(--journal-glass-bg); }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn.ghost {
+  background: linear-gradient(90deg, var(--accent-teal), var(--accent-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  padding: 0.45rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(4px);
+}
+
+.btn.ghost:hover {
+  background: linear-gradient(90deg, var(--accent-teal), var(--accent-pink));
+  -webkit-text-fill-color: #0d121c;
+  border-color: transparent;
+  box-shadow: 0 0 18px rgba(249, 168, 212, 0.25);
+  transform: translateY(-1px);
+}
+
+

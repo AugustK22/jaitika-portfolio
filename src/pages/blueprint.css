@@ -1,0 +1,161 @@
+/* src/pages/blueprint.css */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Sacramento&display=swap");
+
+/* Scope everything to this page */
+.blueprint-page {
+  font-family: var(--font-body);
+  background: var(--gradient-background);
+  color: var(--text-primary);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.blueprint-page .container {
+  position: relative;
+  z-index: 2;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.blueprint-page .page-header {
+  text-align: center;
+  padding: 60px 0 80px 0;
+  animation: bp-fade-in 1s ease-out;
+}
+
+@keyframes bp-fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.blueprint-page .page-title {
+  font-family: var(--font-heading);
+  font-size: 4rem;
+  color: var(--text-heading);
+  margin-bottom: 20px;
+}
+
+.blueprint-page .page-subtitle {
+  font-family: var(--font-script);
+  font-size: 1.8rem;
+  color: var(--accent-blue);
+}
+
+.blueprint-page .section {
+  margin-bottom: 100px;
+  animation: bp-fade-in 1s ease-out;
+}
+
+.blueprint-page .section-title-container {
+  text-align: center;
+  margin-bottom: 60px;
+  position: relative;
+}
+
+.blueprint-page .section-title {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  color: var(--text-heading);
+  margin-bottom: 15px;
+  position: relative;
+  display: inline-block;
+}
+
+.blueprint-page .section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: var(--link-underline);
+  border-radius: 2px;
+}
+
+.blueprint-page .section-subtitle {
+  font-style: italic;
+  color: var(--text-subtle);
+  font-size: 1.1rem;
+}
+
+.blueprint-page .narrative-content {
+  max-width: 900px;
+  margin: 0 auto;
+  background: var(--surface-card-strong);
+  backdrop-filter: blur(10px);
+  padding: 60px 70px;
+  border-radius: 30px;
+  box-shadow: var(--card-shadow);
+  position: relative;
+}
+
+.blueprint-page .narrative-content::before {
+  content: '"';
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  font-size: 8rem;
+  font-family: var(--font-heading);
+  color: var(--surface-glow);
+  line-height: 0.8;
+}
+
+.blueprint-page .narrative-paragraph {
+  font-size: 1.25rem;
+  line-height: 2;
+  color: var(--text-secondary);
+  margin-bottom: 35px;
+  text-align: justify;
+}
+.blueprint-page .narrative-paragraph:last-child { margin-bottom: 0; }
+.blueprint-page .highlight { color: var(--accent-gold); font-weight: 500; font-style: italic; }
+.blueprint-page .emphasis { color: var(--accent-blue); font-weight: 500; }
+.blueprint-page .heart-emphasis { color: var(--accent-pink); font-weight: 500; }
+
+.blueprint-page .dreamcatcher-decoration {
+  position: absolute;
+  font-size: 4rem;
+  opacity: 0.3;
+  animation: bp-sway 4s ease-in-out infinite;
+}
+
+@keyframes bp-sway {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+
+.blueprint-page .dreamcatcher-left { top: -30px; left: -50px; color: var(--accent-pink); }
+.blueprint-page .dreamcatcher-right { bottom: -30px; right: -50px; color: var(--accent-blue); animation-delay: 2s; }
+
+.blueprint-page .closing-quote {
+  text-align: center;
+  padding: 60px 40px;
+  margin: 60px 0;
+  background: var(--surface-highlight);
+  border-radius: 30px;
+  backdrop-filter: blur(10px);
+}
+
+.blueprint-page .closing-quote p {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-style: italic;
+  color: var(--text-heading);
+  line-height: 1.8;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.blueprint-page .closing-quote .author {
+  font-family: var(--font-script);
+  font-size: 1.5rem;
+  color: var(--accent-pink);
+  margin-top: 20px;
+}
+
+/* responsive */
+@media (max-width: 968px) { .blueprint-page .narrative-content { padding: 40px 35px; } .blueprint-page .page-title { font-size: 3rem; } .blueprint-page .section-title { font-size: 2.3rem; } .blueprint-page .dreamcatcher-decoration { display: none; } }
+@media (max-width: 640px) { .blueprint-page .container { padding: 0 20px; } .blueprint-page .page-title { font-size: 2.5rem; } .blueprint-page .section-title { font-size: 2rem; } .blueprint-page .narrative-paragraph { font-size: 1.1rem; } }

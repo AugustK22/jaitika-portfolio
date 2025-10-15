@@ -1,0 +1,19 @@
+.hero-content h1 {
+  /* Use site display font or fallback cleanly */
+  font-family: 'Montserrat', sans-serif;
+  font-size: 4rem;            /* keep your size */
+  background: linear-gradient(90deg, var(--hero-gradient-start), var(--hero-gradient-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; /* ok now because we set a background */
+  text-align: center;
+  margin: 0 auto;             /* center, not yeet to Jupiter */
+  padding: 0;
+  line-height: 1.1;
+}
+
+  .ultimate-container {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  

@@ -42,7 +42,7 @@ function App() {
     <Router>
       {/* <Preloader /> */}
       {/* <FairyLights /> */}
-      <div className="container">
+      <div className="app-shell">
       <Suspense fallback={null /* our global Preloader covers this */}>
         <Routes>
           <Route

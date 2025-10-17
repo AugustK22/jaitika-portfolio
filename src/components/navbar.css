@@ -1,3 +1,74 @@
+/* src/components/navbar.css */
+
+.custom-navbar {
+  background: transparent !important;
+  border: none;
+  box-shadow: none;
+  --bs-navbar-bg: transparent;
+  --bs-navbar-color: var(--text-muted);
+  --bs-navbar-hover-color: var(--accent-blue);
+  --bs-navbar-active-color: var(--accent-blue);
+  --bs-navbar-brand-color: var(--accent-gold);
+  --bs-navbar-brand-hover-color: var(--accent-blue);
+  --bs-navbar-toggler-border-color: transparent;
+}
+
+.custom-navbar .logoJSNavLink {
+  font-family: var(--font-script);
+  font-size: 2.5rem;
+  color: var(--accent-gold);
+  text-shadow: var(--logo-shadow);
+  cursor: pointer;
+  transition: color var(--transition-fast) ease;
+}
+
+.custom-navbar .navbar-nav .nav-link {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  position: relative;
+  transition: color var(--transition-base) ease;
+}
+
+.custom-navbar .navbar-nav .nav-link.active,
+.custom-navbar .navbar-nav .nav-link:hover {
+  color: var(--accent-blue);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  list-style: none;
+}
+
+.nav-links .nav-link {
+  position: relative;
+  padding: 0;
+}
+
+.nav-links .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--link-underline);
+  transition: width var(--transition-base) ease;
+}
+
+.nav-links .nav-link:hover::after,
+.nav-links .nav-link.active::after {
+  width: 100%;
+}
+
 /* Theme Toggle Icon - Always Visible on Navbar */
 .theme-toggle-icon {
   background: none;
@@ -30,6 +101,17 @@
 
 .navbar-tools .navbar-toggler {
   margin-left: 0.25rem;
+  background: none !important;
+  border: none;
+  outline: none;
+}
+
+.navbar[data-bs-theme='light'] .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(0,0,0,0.65)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.navbar[data-bs-theme='dark'] .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(255,255,255,0.85)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
 }
 
 @media (max-width: 991.98px) {
@@ -44,5 +126,23 @@
   .navbar-collapse {
     flex-basis: 100%;
     margin-top: 0.75rem;
+  }
+}
+
+@media (max-width: 968px) {
+  .custom-navbar .nav-right {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 640px) {
+  .custom-navbar {
+    padding: 10px 4px;
+  }
+
+  .custom-navbar .logoJSNavLink {
+    font-size: 2rem;
   }
 }

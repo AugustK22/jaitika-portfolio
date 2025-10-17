@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 // import JSR from './JSR.png'
 // import FairyLights from '../components/FairyLights';
-import '../index.css';
+// import '../index.css';
 import './home.css';
 
 import { useLoading } from '../components/loading';
@@ -84,7 +84,7 @@ const Home = () => {
     return (
         <>
             {/* <FairyLights /> */}
-            <div className="ultimate-container">
+            <div className="ultimate-container style: { width: '100%'margin: '0 auto' }">
 
             <section className="hero">
                 <div className="hero-content" ref={heroContentRef}>

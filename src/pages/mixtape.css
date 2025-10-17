@@ -813,19 +813,6 @@ color: contrast-color(var(--accent-blue)); /* modern browsers only */
   .spotify-frame {
     height: 220px;    /* A fixed, single height for short/mobile screens */
   }
-
-  .playlist-embed {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;/* Remove min-height on small screens to avoid excess space */
-  }
 }
- 
-
-iframe{
-  margin : auto 0;
-}
-
 
 /* If you want it to fully follow the embed default, you can remove any height (but the Spotify UI may require a minimum) */

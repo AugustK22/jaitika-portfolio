@@ -7,19 +7,44 @@ export default function Preloader() {
 
   const [leaving, setLeaving] = useState(false);
   const [gone, setGone] = useState(false);
+  const [displayedPct, setDisplayedPct] = useState(0);
 
-  // Play exit animation, then unmount
+  const basePct = total ? Math.min(100, Math.round((doneCount / total) * 100)) : 15;
+  const targetPct = isReady ? 100 : Math.min(97, basePct);
+
+  // Smoothly animate progress towards the latest target percentage.
   useEffect(() => {
-    if (isReady) {
+    const intervalId = setInterval(() => {
+      setDisplayedPct(prev => {
+        const diff = targetPct - prev;
+        if (Math.abs(diff) <= 0.4) {
+          clearInterval(intervalId);
+          return targetPct;
+        }
+        return prev + diff * 0.35;
+      });
+    }, 32);
+
+    return () => clearInterval(intervalId);
+  }, [targetPct]);
+
+  // Play exit animation, then unmount as soon as data is ready.
+  useEffect(() => {
+    if (isReady && displayedPct >= 99.2 && !leaving) {
       setLeaving(true);
-      const t = setTimeout(() => setGone(true), 500); // keep in sync with .overlay transition
+    }
+  }, [isReady, displayedPct, leaving]);
+
+  useEffect(() => {
+    if (leaving) {
+      const t = setTimeout(() => setGone(true), 480); // keep in sync with .overlay transition
       return () => clearTimeout(t);
     }
-  }, [isReady]);
+  }, [leaving]);
 
   if (gone) return null;
 
-  const pct = total ? Math.min(100, Math.round((doneCount / total) * 100)) : 10;
+  const pct = Math.min(100, Math.max(0, displayedPct));
 
   return (
     <div className={`overlay ${leaving ? 'overlay--leaving' : ''}`} aria-hidden={isReady}>

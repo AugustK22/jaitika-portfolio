@@ -1,5 +1,5 @@
 // src/hooks/useThemeManager.js
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useLayoutEffect } from 'react';
 import { themes } from '../theme'; // Import our theme objects
 
 
@@ -24,6 +24,13 @@ export function useThemeManager() {
     document.body.classList.remove('light-mode', 'dark-mode');
     document.body.classList.add(`${themeName}-mode`);
     document.body.setAttribute('data-theme', themeName);
+    document.body.setAttribute('data-bs-theme', themeName === 'dark' ? 'dark' : 'light');
+
+    const root = document.documentElement;
+    root.classList.remove('light-mode', 'dark-mode');
+    root.classList.add(`${themeName}-mode`);
+    root.setAttribute('data-theme', themeName);
+    root.setAttribute('data-bs-theme', themeName === 'dark' ? 'dark' : 'light');
 
     // Manually set each CSS variable on the body's style
     for (const [key, value] of Object.entries(themeObject)) {
@@ -32,7 +39,7 @@ export function useThemeManager() {
   }, []);
 
   // Effect to apply theme when state changes
-  useEffect(() => {
+  useLayoutEffect(() => {
     applyTheme(theme);
     window.localStorage.setItem('theme', theme);
   }, [theme, applyTheme]);

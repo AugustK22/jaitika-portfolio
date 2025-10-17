@@ -1,6 +1,11 @@
 /* src/pages/journal.css */
 @import url("https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap");
 
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 :root {
   /* --font-display: 'Cormorant', serif;
   --font-body: 'Inter', sans-serif;
@@ -75,8 +80,39 @@ padding : 0px 100px;
   overflow-x: hidden;
 }
 
-.journal-page .container { max-width: var(--max-width); margin: 0 auto; padding: var(--spacing); position: relative; z-index: 2; }
-.journal-page .center { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: var(--spacing); }
+.journal-page .container { width: 100%; margin: 0 0; padding: 0; position: relative; z-index: 2; }
+.journal-page .center { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+
+.journal-back {
+  position: fixed;
+  top: clamp(16px, 3vw, 28px);
+  left: clamp(16px, 4vw, 48px);
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--journal-glass-border);
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--journal-text-bright);
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.journal-back:hover {
+  transform: translateY(-2px);
+  border-color: var(--journal-pink);
+  color: var(--journal-pink);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.journal-back:focus-visible {
+  outline: 2px solid var(--journal-teal);
+  outline-offset: 2px;
+}
 
 /* ============================================
    STARFIELD
@@ -348,9 +384,7 @@ body {
   background: var(--journal-bg-mid);
 }
 
-.journal-page,
-.journal-page .container,
-.composer,
+.composer
 .controls,
 .card,
 .notice,
@@ -379,7 +413,7 @@ body {
   .journal-page, .composer, .controls, .gate, .notice {
     padding-left: 2vw; padding-right: 2vw; min-width: 0; 
   }
-  .entry, .card, .notice, .gate, .composer, .container, .stack { padding: 12px 6px !important; }
+  .entry, .card, .notice, .gate, .composer,  .stack { padding: 12px 6px !important; }
   .row, .entry-head, .controls-row, .topbar,
   .topbar-actions { gap: 0.5rem; }
   .hero h1, h1 { font-size: 2rem; }

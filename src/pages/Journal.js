@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Lock, Plus, ChevronDown, ChevronUp, LogOut, Edit2, Trash2, Search, SlidersHorizontal } from "lucide-react";
+import { Lock, Plus, ChevronDown, ChevronUp, LogOut, Edit2, Trash2, Search, SlidersHorizontal, ArrowLeft } from "lucide-react";
 import "./journal.css";
 import { useNavigate } from "react-router-dom";
+import '../index.css';
 
 
 function Stars({ count = 80 }) {
@@ -265,11 +266,15 @@ export default function Journal() {
   };
 
   const navigate = useNavigate();
+  const goBack = () => (window.history.length > 1 ? navigate(-1) : navigate("/"));
   const goHome = () => navigate("/");
 
   if (firebaseError) {
     return (
       <main className="journal-page">
+        <button className="journal-back" onClick={goBack} type="button" aria-label="Go back">
+          <ArrowLeft size={20} />
+        </button>
         <div className="container center">
           <div className="notice">
             <h2>Firebase Not Configured</h2>
@@ -283,6 +288,9 @@ export default function Journal() {
   if (loading) {
     return (
       <main className="journal-page">
+        <button className="journal-back" onClick={goBack} type="button" aria-label="Go back">
+          <ArrowLeft size={20} />
+        </button>
         <Stars />
       </main>
     );
@@ -291,6 +299,9 @@ export default function Journal() {
   if (!authenticated) {
     return (
       <main className="journal-page">
+        <button className="journal-back" onClick={goBack} type="button" aria-label="Go back">
+          <ArrowLeft size={20} />
+        </button>
         <Stars />
 
         <div className="container center">
@@ -331,6 +342,9 @@ export default function Journal() {
   return (
     <main className="journal-page">
       <Stars />
+      <button className="journal-back" onClick={goBack} type="button" aria-label="Go back">
+        <ArrowLeft size={20} />
+      </button>
 
       <div className="container">
         <div className="topbar">

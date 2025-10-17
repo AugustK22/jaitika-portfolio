@@ -1,6 +1,16 @@
 // src/App.js
-import React, { useCallback, useEffect, useState, Suspense, lazy } from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import './index.css';
+import { useThemeManager } from './hooks/useThemeManager';
+// import { LoadingProvider } from './components/loading';
+// import Preloader from './components/Preloader';
+// import { Helmet } from 'react-helmet';
+
+
+
 import useLenis from './hooks/useLenis';
 // import React, { Suspense, lazy } from 'react';
 // 
@@ -16,49 +26,21 @@ const Mixtape = lazy(() => import('./pages/Mixtape'));
 const Sphere = lazy(() => import('./pages/Sphere'));
 
 function App() {
-  // useLenis();
-  const getInitialTheme = () => {
-    if (typeof window === 'undefined') {
-      return 'light';
-    }
-    const storedPreference = window.localStorage.getItem('theme');
-    if (storedPreference === 'light' || storedPreference === 'dark') {
-      return storedPreference;
-    }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  };
+  // <Helmet>
+  //       <link
+  //         rel="preload"
+  //         as="image"
+  //         href="https://i.ibb.co/xKJ6GYnb/JSR-1.webp"
+  //         // Optional: if you add a srcset, also add imagesrcset/imagesizes here
+  //       />
+  //     </Helmet>
 
-  const [theme, setTheme] = useState(getInitialTheme);
-
-  useEffect(() => {
-    if (typeof document === 'undefined') {
-      return;
-    }
-    const isDarkMode = theme === 'dark';
-    document.body.classList.toggle('dark-mode', isDarkMode);
-    document.body.setAttribute('data-theme', theme);
-    window.localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return;
-    }
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (event) => {
-      setTheme(event.matches ? 'dark' : 'light');
-    };
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
-
-  const toggleTheme = useCallback(
-    () => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark')),
-    []
-  );
+  const [theme, toggleTheme] = useThemeManager();
 
   return (
+    // <LoadingProvider timeoutMs={10000}>
     <Router>
+      {/* <Preloader /> */}
       {/* <FairyLights /> */}
       <div className="container">
       <Suspense fallback={null /* our global Preloader covers this */}>
@@ -104,6 +86,7 @@ function App() {
         </Suspense>
       </div>
     </Router>
+    // </LoadingProvider>
   );
 }
 

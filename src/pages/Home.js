@@ -4,12 +4,57 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 // import JSR from './JSR.png'
 // import FairyLights from '../components/FairyLights';
+import '../index.css';
 import './home.css';
+
+import { useLoading } from '../components/loading';
 
 const Home = () => {
     const heroContentRef = useRef(null);
     const heroImageRef = useRef(null);
     const navigate = useNavigate();
+
+
+    const { register  } = useLoading();
+    useEffect(() => {
+        const waitForHeroImage = () =>
+          new Promise((resolve) => {
+            // Grab the element (via ref if present, else query once it exists)
+            const getImg = () => heroImageRef.current?.querySelector('img');
+    
+            const attach = (img) => {
+              if (!img) {
+                // wait for it to appear in the DOM
+                const mo = new MutationObserver(() => {
+                  const node = getImg();
+                  if (node) {
+                    mo.disconnect();
+                    attach(node);
+                  }
+                });
+                mo.observe(document.body, { childList: true, subtree: true });
+                // safety timer in case observer never fires
+                setTimeout(() => { mo.disconnect(); resolve(); }, 8000);
+                return;
+              }
+    
+              // resolve when fully decoded (no layout jank)
+              if ('decode' in img) {
+                img.decode().then(resolve).catch(resolve);
+              } else if (img.complete) {
+                resolve();
+              } else {
+                img.addEventListener('load', resolve, { once: true });
+                img.addEventListener('error', resolve, { once: true });
+              }
+            };
+    
+            attach(getImg());
+          });
+    
+        // Register the factory (must be a function that returns a fresh promise)
+        register(() => waitForHeroImage());
+      }, [register]);
 
     useEffect(() => {
         let ticking = false;
@@ -54,7 +99,7 @@ const Home = () => {
                 <div className="hero-image-container" ref={heroImageRef}>
                     <div className="image-wrapper">
                         <div className="polaroid-frame">
-                            <img src="https://i.ibb.co/d0VcNV5r/Untitled-design-1.png" border="0" alt="Jaitika Singh Rathore" />
+                            <img src="https://i.ibb.co/xKJ6GYnb/JSR-1.webp" border="0" alt="Jaitika Singh Rathore" loading="eager" fetchPriority='high' decoding='async' />
                             <div className="polaroid-caption">living in the margins ✨</div>
                         </div>
                     </div>

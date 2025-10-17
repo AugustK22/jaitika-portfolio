@@ -1,0 +1,48 @@
+/* Theme Toggle Icon - Always Visible on Navbar */
+.theme-toggle-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-gold);
+  transition: all var(--transition-base) ease;
+  border-radius: 8px;
+}
+
+.theme-toggle-icon:hover {
+  color: var(--accent-blue);
+  transform: rotate(20deg) scale(1.05);
+  background: var(--surface-overlay);
+}
+
+.theme-toggle-icon:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 3px;
+}
+
+.navbar-tools {
+  flex-shrink: 0;
+  z-index: 3;
+}
+
+.navbar-tools .navbar-toggler {
+  margin-left: 0.25rem;
+}
+
+@media (max-width: 991.98px) {
+  .navbar {
+    flex-wrap: wrap;
+  }
+
+  .navbar-tools {
+    margin-left: auto;
+  }
+
+  .navbar-collapse {
+    flex-basis: 100%;
+    margin-top: 0.75rem;
+  }
+}

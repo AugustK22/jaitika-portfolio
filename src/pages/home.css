@@ -1,19 +1,102 @@
-.hero-content h1 {
+/* .hero-content h1 { */
   /* Use site display font or fallback cleanly */
-  font-family: 'Montserrat', sans-serif;
-  font-size: 4rem;            /* keep your size */
-  background: linear-gradient(90deg, var(--hero-gradient-start), var(--hero-gradient-end));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; /* ok now because we set a background */
-  text-align: center;
-  margin: 0 auto;             /* center, not yeet to Jupiter */
-  padding: 0;
-  line-height: 1.1;
-}
+  /* font-family: 'Montserrat', sans-serif; */
+  /* font-size: 1rem;            keep your size */
+  /* background: linear-gradient(90deg, var(--hero-gradient-start), var(--hero-gradient-end)); */
+  /* -webkit-background-clip: text; */
+  /* -webkit-text-fill-color: transparent; ok now because we set a background */
+  /* text-align: center; */
+  /* margin: 0 auto;              */
+  /* padding: 0; */
+  /* line-height: 1.1; */
+/* } */
 
-  .ultimate-container {
+  /* .ultimate-container {
     max-width: 80%;
     margin: 0 auto;
     padding: 0 20px;
-  }
-  
+  } */
+  body.dark-mode {
+  --gradient-background: radial-gradient(circle at top, #0f172a 0%, #0b1120 45%, #020617 100%);
+  --surface-card: rgba(17, 24, 39, 0.78);
+  --surface-card-strong: rgba(17, 24, 39, 0.72);
+  --surface-overlay: rgba(15, 23, 42, 0.68);
+  --surface-highlight: rgba(249, 168, 212, 0.12);
+  --surface-glow: rgba(125, 211, 232, 0.2);
+  --surface-border: rgba(125, 211, 232, 0.25);
+  --surface-border-strong: rgba(249, 168, 212, 0.22);
+
+  --text-primary: #e2e8f0;
+  --text-secondary: #cbd5f5;
+  --text-heading: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-subtle: #64748b;
+  --text-inverse: #0b1120;
+
+  --accent-blue: #7dd3e8;
+  --accent-pink: #f9a8d4;
+  --accent-gold: #facc15;
+  --hero-gradient-start: #7dd3e8;
+  --hero-gradient-end: #f9a8d4;
+  --link-underline: linear-gradient(90deg, rgba(125, 211, 232, 0.9), rgba(249, 168, 212, 0.9));
+
+  --logo-shadow: 0 0 18px rgba(250, 204, 21, 0.35);
+  --card-shadow: 0 20px 40px rgba(8, 11, 23, 0.6);
+  --card-shadow-hover: 0 25px 55px rgba(8, 11, 23, 0.75);
+  --polaroid-shadow: 0 22px 50px rgba(3, 7, 18, 0.72);
+  --polaroid-outline: 0 0 0 1px rgba(148, 163, 184, 0.12);
+
+  --button-background: rgba(30, 41, 59, 0.85);
+  --button-hover-background: rgba(59, 130, 246, 0.18);
+  --button-border: rgba(125, 211, 232, 0.45);
+  --button-shadow: 0 14px 34px rgba(8, 11, 23, 0.55);
+  --button-text: #f8fafc;
+
+  --fairy-light-color: rgba(255, 243, 178, 0.85);
+  --fairy-light-glow: rgba(234, 179, 8, 0.65);
+
+  --bg-cream: #10172a;
+  --bg-rose: #111827;
+  --bg-sky: #0b1220;
+  --text: var(--text-primary);
+  --charcoal: var(--text-heading);
+  --muted: var(--text-muted);
+  --teal: var(--accent-blue);
+  --pink: var(--accent-pink);
+  --gold: var(--accent-gold);
+  --paper: rgba(17, 24, 39, 0.85);
+  --ring: rgba(125, 211, 232, 0.25);
+  --shadow-s: 0 10px 28px rgba(8, 11, 23, 0.55);
+  --shadow-m: 0 18px 40px rgba(5, 9, 20, 0.65);
+
+  --journal-bg-start: #0a0e1a;
+  --journal-bg-mid: #0f1420;
+  --journal-bg-end: #151923;
+  --journal-text-bright: #f8fafc;
+  --journal-text-main: #e2e8f0;
+  --journal-text-muted: #94a3b8;
+  --journal-text-dim: #64748b;
+  --journal-pink: #f4b1c2;
+  --journal-pink-glow: rgba(244, 177, 194, 0.18);
+  --journal-teal: #7dd3e8;
+  --journal-teal-glow: rgba(125, 211, 232, 0.18);
+  --journal-gold: #fbbf24;
+  --journal-gold-glow: rgba(251, 191, 36, 0.18);
+  --journal-glass-bg: rgba(17, 25, 40, 0.6);
+  --journal-glass-border: rgba(125, 211, 232, 0.18);
+  --journal-glass-hover: rgba(30, 41, 59, 0.75);
+  --journal-shadow-soft: 0 12px 48px rgba(8, 11, 23, 0.5);
+  --journal-shadow-heavy: 0 30px 70px rgba(3, 7, 18, 0.85);
+}
+.card {
+  background: var(--surface-card);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 40px 35px;
+  box-shadow: var(--card-shadow);
+  transition: transform var(--transition-base) ease, box-shadow var(--transition-base) ease, border-color var(--transition-base) ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+}

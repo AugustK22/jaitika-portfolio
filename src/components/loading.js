@@ -1,75 +1,66 @@
-import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
+// src/loading.js
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 const LoadingCtx = createContext(null);
 
 export function LoadingProvider({ children, timeoutMs = 10000 }) {
-  const tasksRef = useRef([]);
+  const pendingRef = useRef(new Set());
   const [doneCount, setDoneCount] = useState(0);
+  const [total, setTotal] = useState(0);
   const [isReady, setIsReady] = useState(false);
 
-  const register = (promiseFactory) => {
-    // promiseFactory must return a fresh promise when called
-    tasksRef.current.push(promiseFactory);
-  };
+  // Register a task factory; increments total and tracks finish.
+  const register = useCallback((promiseFactory) => {
+    setTotal((t) => t + 1);
+    const p = Promise.resolve()
+      .then(() => promiseFactory())
+      .catch(() => {}) // never deadlock on failure
+      .finally(() => {
+        pendingRef.current.delete(p);
+        setDoneCount((c) => c + 1);
+      });
+    pendingRef.current.add(p);
+    return p;
+  }, []);
 
+  // Built-in tasks: fonts + any images present at the moment.
   useEffect(() => {
-    let cancelled = false;
-
-    async function run() {
-      // Build the full task list: fonts + images + user tasks
-      const fontTask = () => document.fonts?.ready ?? Promise.resolve();
-      const imgTask = () => {
-        const imgs = Array.from(document.images || []);
-        const decodes = imgs.map((img) =>
+    const fontTask = () => (document.fonts?.ready ?? Promise.resolve());
+    const imgTask = () => {
+      const imgs = Array.from(document.images || []);
+      return Promise.all(
+        imgs.map((img) =>
           (img.decode ? img.decode() : Promise.resolve()).catch(() => {})
-        );
-        return Promise.all(decodes);
-      };
-
-      const factories = [fontTask, imgTask, ...tasksRef.current];
-
-      if (factories.length === 0) {
-        setIsReady(true);
-        return;
-      }
-
-      let completed = 0;
-      const inc = () => setDoneCount(++completed);
-
-      // Wrap each task to bump progress
-      const running = factories.map((f) =>
-        Promise.resolve()
-          .then(() => f())
-          .then(inc)
-          .catch(inc)
+        )
       );
+    };
 
-      const all = Promise.allSettled(running);
+    register(fontTask);
+    register(imgTask);
 
-      // Timeout guard
-      const timeout = new Promise((resolve) => setTimeout(resolve, timeoutMs, 'timeout'));
+    const timeout = setTimeout(() => setIsReady(true), timeoutMs);
+    return () => clearTimeout(timeout);
+  }, [register, timeoutMs]);
 
-      const result = await Promise.race([all, timeout]);
-      if (!cancelled) setIsReady(true);
-      return result;
-    }
+  // Flip ready only when everything registered so far is done.
+  useEffect(() => {
+    if (total > 0 && doneCount >= total) setIsReady(true);
+  }, [doneCount, total]);
 
-    run();
-    return () => { cancelled = true; };
-  }, [timeoutMs]);
-
-  const value = useMemo(() => ({
-    isReady,
-    doneCount,
-    total: 2 + tasksRef.current.length, // fonts + images + custom
-    register,
-  }), [isReady, doneCount]);
-
-  return (
-    <LoadingCtx.Provider value={value}>
-      {children}
-    </LoadingCtx.Provider>
+  const value = useMemo(
+    () => ({ isReady, doneCount, total, register }),
+    [isReady, doneCount, total, register]
   );
+
+  return <LoadingCtx.Provider value={value}>{children}</LoadingCtx.Provider>;
 }
 
 export function useLoading() {

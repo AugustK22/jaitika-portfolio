@@ -47,9 +47,8 @@ export default function Mixtape() {
       return;
     }
 
-    // Listen to /mixtape/photos where data is { "https://...img": "caption" }
     // Listen to /db/mixtape/photos where items are { url, note, addedAt }
-const photosRef = ref(db, "db/mixtape/photos");
+    const photosRef = ref(db, "db/mixtape/photos");
 
     const unsub = onValue(
       photosRef,
@@ -59,17 +58,16 @@ const photosRef = ref(db, "db/mixtape/photos");
           return;
         }
         const obj = snap.val() || {};
-const list = Object.values(obj)
-  .map((row) => ({
-    src: String(row?.url ?? ""),
-    caption: String(row?.note ?? ""),
-    addedAt: Number(row?.addedAt ?? 0),
-  }))
-  .filter((p) => /^https?:\/\//i.test(p.src))
-  .sort((a, b) => b.addedAt - a.addedAt) // newest first
-  .map(({ addedAt, ...rest }) => rest);  // drop addedAt for UI
-setPhotos(list);
-
+        const list = Object.values(obj)
+          .map((row) => ({
+            src: String(row?.url ?? ""),
+            caption: String(row?.note ?? ""),
+            addedAt: Number(row?.addedAt ?? 0),
+          }))
+          .filter((p) => /^https?:\/\//i.test(p.src))
+          .sort((a, b) => b.addedAt - a.addedAt) // newest first
+          .map(({ addedAt, ...rest }) => rest); // drop addedAt for UI
+        setPhotos(list);
       },
       (err) => {
         console.error("Photos fetch error:", err);
@@ -100,30 +98,35 @@ setPhotos(list);
           </header>
 
           {/* MUSIC */}
-          <section className="section card" aria-label="Music">
-            <h2>A Soundtrack for the Soul.</h2>
-            <div className="line" />
-            <div className="music-grid">
-              <div className="playlist-embed">
-              + <iframe
-   style={{ borderRadius: "12px" }}
-   src="https://open.spotify.com/embed/playlist/320Mu0SXXYHQ9CsyC28V9e?utm_source=generator"
-   width="100%"
-   height="352"
-   frameBorder="0"
-   allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-   loading="lazy"
-   title="Spotify Playlist Embed"
-   referrerPolicy="strict-origin-when-cross-origin"
- />
+          {/* MUSIC */}
+<section className="section" aria-label="Music">
+  <h2>A Soundtrack for the Soul.</h2>
+  <div className="line" />
 
-              </div>
+  <div className="music-grid">
+    {/* Playlist gets its own card */}
+    <div className="playlist-embed card" role="group" aria-label="Spotify playlist">
+      <iframe
+        className="spotify-frame"
+        src="https://open.spotify.com/embed/playlist/320Mu0SXXYHQ9CsyC28V9e?utm_source=generator&theme=0"
+        width="100%"
+        height="352"
+        frameBorder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+        title="Spotify Playlist Embed"
+        referrerPolicy="strict-origin-when-cross-origin"
+      />
+    </div>
 
-              <Tracks />
-            </div>
-          </section>
+    {/* Tracks get their own card */}
+    <div className="tracks card">
+      <Tracks />
+    </div>
+  </div>
+</section>
 
-          {/* POLAROID GALLERY (Firebase-driven) */}
+
           {/* MOOD BOARD GALLERY (Firebase-driven) */}
           <section className="section moodboard-section" aria-label="Photo Gallery">
             <h2>Little things I keep like seashells.</h2>

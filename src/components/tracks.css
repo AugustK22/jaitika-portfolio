@@ -125,4 +125,49 @@
     }
     .go-chip { grid-column: 1 / -1; justify-self: start; }
   }
+  /* Scrollable container so the card never grows unbounded */
+.tracks-scroll {
+    max-height: min(60vh, 520px);
+    overflow: auto;
+    padding-right: 6px; /* give scrollbar some breathing room */
+  }
+  
+  /* Subtle scrollbar so it looks intentional */
+  .tracks-scroll::-webkit-scrollbar { width: 8px; }
+  .tracks-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .tracks-scroll::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, #ffd700, #000 70%);
+    border-radius: 8px;
+  }
+  .tracks-scroll::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, #ffd700, #000 55%);
+  }
+  
+  /* Loading + empty states */
+  .tracks-fallback,
+  .tracks-empty {
+    color: #aab;
+    font-size: 0.95rem;
+    padding: 8px 4px;
+  }
+  
+  .tracks-skel .shimmer {
+    height: 56px;
+    border-radius: 14px;
+    margin-bottom: 12px;
+    background:
+      linear-gradient(90deg,
+        rgba(255,255,255,0.06) 0%,
+        rgba(255,255,255,0.14) 40%,
+        rgba(255,255,255,0.06) 80%);
+    animation: shimmer 1.2s infinite;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  @keyframes shimmer {
+    0% { background-position: -200px 0; }
+    100% { background-position: 200px 0; }
+  }
+  
   

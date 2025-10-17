@@ -3,6 +3,7 @@ import { Lock, Plus, ChevronDown, ChevronUp, LogOut, Edit2, Trash2, Search, Slid
 import "./journal.css";
 import { useNavigate } from "react-router-dom";
 
+
 function Stars({ count = 80 }) {
   const stars = useMemo(() => (
     Array.from({ length: count }).map((_, i) => ({
@@ -24,7 +25,6 @@ function Stars({ count = 80 }) {
     </div>
   );
 }
-
 
 // --- Firebase (modular SDK) with graceful fallback to window.firebase ---
 let initializeApp, getDatabase, ref, set, get, remove, onValue;
@@ -63,6 +63,7 @@ export default function Journal() {
   const [authenticated, setAuthenticated] = useState(false);
   const [passkey, setPasskey] = useState("");
   const [error, setError] = useState("");
+  const [keyExists, setKeyExists] = useState(null);
 
   const [entries, setEntries] = useState([]);
   const [expanded, setExpanded] = useState({});
@@ -88,9 +89,21 @@ export default function Journal() {
       setAuthenticated(true);
       wireEntries();
     } else {
-      setLoading(false);
+      checkKeyExists();
     }
   }, []);
+
+  const checkKeyExists = async () => {
+    try {
+      const passkeyRef = ref(database, "settings/passkey");
+      const snap = await get(passkeyRef);
+      setKeyExists(snap.exists());
+      setLoading(false);
+    } catch (e) {
+      console.error("Error checking key:", e);
+      setLoading(false);
+    }
+  };
 
   const wireEntries = () => {
     const entriesRef = ref(database, "entries");
@@ -122,19 +135,30 @@ export default function Journal() {
       setError("Firebase not configured.");
       return;
     }
+    if (!passkey.trim()) {
+      setError("Please enter a passkey.");
+      return;
+    }
     try {
       const passkeyRef = ref(database, "settings/passkey");
       const snap = await get(passkeyRef);
-      const demo = "midnight2025";
-      const serverKey = snap.exists() ? snap.val() : demo;
 
-      if (passkey === serverKey) {
-        if (!snap.exists()) await set(passkeyRef, demo);
+      if (!snap.exists()) {
+        // No key exists, store whatever user entered as the permanent key
+        await set(passkeyRef, passkey);
         setAuthenticated(true);
         sessionStorage.setItem("blogAuthenticated", "true");
         wireEntries();
       } else {
-        setError("Invalid passkey. Try again.");
+        // Key exists, verify it matches
+        const serverKey = snap.val();
+        if (passkey === serverKey) {
+          setAuthenticated(true);
+          sessionStorage.setItem("blogAuthenticated", "true");
+          wireEntries();
+        } else {
+          setError("Invalid passkey. Try again.");
+        }
       }
     } catch (e) {
       console.error("Auth error:", e);
@@ -200,11 +224,9 @@ export default function Journal() {
     return lines.length < txt.length ? `${lines}…` : lines;
   };
 
-  // Filter, search, and sort entries
   const filteredEntries = useMemo(() => {
     let result = [...entries];
 
-    // Apply search
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       result = result.filter(
@@ -215,12 +237,10 @@ export default function Journal() {
       );
     }
 
-    // Apply emotion filter
     if (filterEmotion !== "all") {
       result = result.filter((e) => e.type === filterEmotion);
     }
 
-    // Apply sorting
     switch (sortBy) {
       case "newest":
         result.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
@@ -243,11 +263,10 @@ export default function Journal() {
     sessionStorage.removeItem("blogAuthenticated");
     setPasskey("");
   };
+
   const navigate = useNavigate();
-const goHome = () => navigate("/");
+  const goHome = () => navigate("/");
 
-
-  // Loading state
   if (firebaseError) {
     return (
       <main className="journal-page">
@@ -269,7 +288,6 @@ const goHome = () => navigate("/");
     );
   }
 
-  // Auth gate
   if (!authenticated) {
     return (
       <main className="journal-page">
@@ -283,50 +301,51 @@ const goHome = () => navigate("/");
             <h1 className="title">Late Night Thoughts</h1>
             <p className="subtitle">enter passkey to continue</p>
 
+            {keyExists === false && (
+              <div className="welcome-message">
+                <p>
+                  Welcome, Jaitika. This is your sacred space. Choose a passkey that only you will know—it becomes your permanent key. We won't see it, no one else can access it. This sanctuary is entirely yours. Create something meaningful.
+                </p>
+              </div>
+            )}
+
             <input
               type="password"
               value={passkey}
               onChange={(e) => setPasskey(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleAuth()}
-              placeholder="Enter passkey"
+              placeholder={keyExists === false ? "Create your passkey" : "Enter passkey"}
               className="input"
             />
             {error && <p className="error">{error}</p>}
 
             <button className="btn primary" onClick={handleAuth}>
-              Access Journal
+              {keyExists === false ? "Set Passkey" : "Access Journal"}
             </button>
-
-            <p className="hint">Demo passkey: midnight2025</p>
           </div>
         </div>
       </main>
     );
   }
 
-  // Main journal interface
   return (
     <main className="journal-page">
       <Stars />
 
       <div className="container">
-        {/* Top bar */}
         <div className="topbar">
-  <div className="brand">LNT</div>
+          <div className="brand">LNT</div>
+          <div className="topbar-actions">
+            <button className="btn ghost" onClick={goHome} title="Back to Home">
+              ← Home
+            </button>
+            <button className="logout" onClick={logout} title="Logout">
+              <LogOut />
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
 
-  <div className="topbar-actions">
-    <button className="btn ghost" onClick={goHome} title="Back to Home">
-      ⬅ Home
-    </button>
-
-    <button className="logout" onClick={logout} title="Logout">
-      <LogOut />
-      <span>Logout</span>
-    </button>
-  </div>
-</div>
-
-        {/* Hero */}
         <header className="hero">
           <h1>Late Night Thoughts</h1>
           <p className="tagline">where vulnerability lives and hearts speak</p>
@@ -336,7 +355,6 @@ const goHome = () => navigate("/");
           </p>
         </header>
 
-        {/* Composer */}
         <div className="composer-wrap">
           <div className="card composer">
             <button
@@ -396,7 +414,6 @@ const goHome = () => navigate("/");
           </div>
         </div>
 
-        {/* Search, Sort, and Filter Controls */}
         <div className="controls-wrap">
           <div className="card controls">
             <div className="search-box">
@@ -446,7 +463,6 @@ const goHome = () => navigate("/");
           </div>
         </div>
 
-        {/* Entries */}
         <div className="stack">
           {filteredEntries.length === 0 ? (
             <div className="empty">

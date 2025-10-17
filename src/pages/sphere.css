@@ -203,3 +203,83 @@
 /* ... (keep the rest of the file) ... */
 
 /* ... (keep all other styles after this) ... */
+/* ===== Education timeline – responsive only CSS (drop-in) ===== */
+/* Works with existing markup in Sphere.js (Education > .timeline). */
+
+/* 1) Make the date column width tunable */
+.sphere-page .timeline { --tl-when-w: 180px; } /* desktop default */
+
+/* 2) Use the variable for the grid and dot positioning */
+.sphere-page .tl-row {
+  grid-template-columns: var(--tl-when-w) 1fr !important;
+}
+.sphere-page .tl-dot {
+  left: calc(var(--tl-when-w) - 9px) !important; /* centers dot on column edge */
+}
+
+/* 3) Typographic resilience: allow wrapping & better breaks */
+.sphere-page .tl-when {
+  white-space: nowrap;
+}
+@media (max-width: 720px) {
+  .sphere-page .tl-when { white-space: normal; } /* allow wrap on small screens */
+}
+
+.sphere-page .tl-body h3 {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+.sphere-page .tl-body .sub,
+.sphere-page .badge {
+  overflow-wrap: anywhere;
+}
+
+/* 4) Tablet tune: slightly narrower date column */
+@media (max-width: 1040px) {
+  .sphere-page .timeline { --tl-when-w: 150px; }
+}
+
+/* 5) Phone tune: even narrower date column (still 2-col) */
+@media (max-width: 720px) {
+  .sphere-page .timeline { --tl-when-w: 140px; } /* plays nice with your existing 140px rule */
+}
+
+/* 6) Compact phones: stack vertically, pad for dot, move dot left */
+@media (max-width: 560px) {
+  .sphere-page .tl-row {
+    grid-template-columns: 1fr !important;
+    padding-left: 18px;           /* room for the dot/line */
+  }
+  .sphere-page .tl-when {
+    margin-bottom: 6px;           /* date above entry */
+    font-weight: 700;
+  }
+  .sphere-page .tl-dot {
+    left: 6px !important;         /* bring dot to the margin */
+    top: 12px;                    /* aligns with the date line */
+  }
+}
+
+/* 7) Ultra-narrow safety: keep headings readable */
+@media (max-width: 380px) {
+  .sphere-page .tl-body h3 { font-size: 0.98rem; }
+  .sphere-page .tl-body .sub { font-size: 0.9rem; }
+}
+/* ===== Fix paragraph wrapping inside Education timeline ===== */
+.sphere-page .tl-body,
+.sphere-page .tl-body * {
+  white-space: normal !important;   /* allow wrapping */
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  hyphens: auto;
+}
+
+/* Ensure links, spans, and badges don’t push width */
+.sphere-page .tl-body span,
+.sphere-page .tl-body p,
+.sphere-page .tl-body small {
+  display: inline-block;
+  max-width: 100%;
+  line-height: 1.4;
+}

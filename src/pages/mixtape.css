@@ -221,7 +221,7 @@ color: contrast-color(var(--accent-blue)); /* modern browsers only */
 
 /* Mood Board with Pins */
 .mixtape-page .moodboard-section {
-  background: var(--surface-card);
+  background: var(--surface-card);  
   border: 2px solid var(--surface-border);
   border-radius: var(--radius-xl, 28px);
   padding: 32px;
@@ -338,3 +338,481 @@ color: contrast-color(var(--accent-blue)); /* modern browsers only */
 .mixtape-page .pin-container:hover .pin-head {
   transform: translateX(-50%) rotate(45deg) scale(1.1);
 }       
+@media (max-width: 500px) {
+  .mixtape-page .container {
+    padding: 0 10px;
+  }
+  .mixtape-page h1 {
+    font-size: 1.8rem;
+  }
+  .mixtape-page .music-grid,
+  .mixtape-page .polaroids,
+  .mixtape-page .moodboard {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+  .mixtape-page .section {
+    margin: 18px 0;
+    padding: 12px 6px;
+  }
+  .mixtape-page .card,
+  .mixtape-page .choice {
+    padding: 10px 5px;
+  }
+  .mixtape-page .track {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .mixtape-page .polaroid img,
+  .mixtape-page .pinned-photo img {
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+  }
+}
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Sacramento&display=swap");
+
+/* =========================
+   Page scope / base layout
+   ========================= */
+.mixtape-page {
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background: var(--gradient-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.mixtape-page .container {
+  position: relative;
+  z-index: 2;
+  max-width: var(--grid-max, 1400px);
+  margin: 0 auto;
+  padding: 0 var(--gutter, 40px);
+  padding-left: max(var(--gutter, 40px), env(safe-area-inset-left));
+  padding-right: max(var(--gutter, 40px), env(safe-area-inset-right));
+}
+
+/* =========================
+   Header
+   ========================= */
+.mixtape-page .page-header { padding: 52px 0 8px 0; text-align: center; }
+.mixtape-page .kicker { font-family: var(--font-script); color: var(--accent-blue); font-size: 1.7rem; margin-bottom: 6px; }
+.mixtape-page h1 { font-family: var(--font-heading); color: var(--text-heading); font-size: 3.4rem; line-height: 1.1; margin-bottom: 6px; }
+.mixtape-page .subtitle { color: var(--accent-gold); letter-spacing: 2px; text-transform: uppercase; font-weight: 500; font-size: .92rem; }
+.mixtape-page .intro { max-width: 900px; margin: 14px auto 0 auto; color: var(--text-secondary); line-height: 1.9; font-size: 1.05rem; }
+
+/* =========================
+   Sections + cards
+   ========================= */
+.mixtape-page .section { margin: 28px 0; }
+.mixtape-page .card {
+  background: var(--surface-card);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-xl, 28px);
+  border: 1px solid var(--surface-border);
+  box-shadow: var(--card-shadow);
+  padding: 26px;
+}
+.mixtape-page .section h2 { font-family: var(--font-heading); color: var(--text-heading); font-size: 1.6rem; margin-bottom: 8px; }
+.mixtape-page .line { height: 1px; background: linear-gradient(90deg, transparent, var(--surface-border), transparent); margin: 10px 0 18px 0; }
+
+/* =========================
+   Music area
+   ========================= */
+.mixtape-page .music-grid {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 26px;
+  align-items: start;
+}
+
+/* Make the Spotify embed scale politely and keep rounded corners */
+.mixtape-page .playlist-embed {
+  border-radius: var(--radius-lg, 22px);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--surface-border);
+}
+.mixtape-page .playlist-embed .spotify-frame {
+  display: block;
+  width: 100%;
+  height: clamp(280px, 42vw, 352px);
+  border: 0;
+}
+
+/* Tracks list */
+.mixtape-page .tracks { display: grid; gap: 10px; }
+.mixtape-page .track { display: flex; gap: 12px; align-items: flex-start; padding: 12px; border-radius: 14px; background: var(--surface-highlight); border: 1px solid var(--surface-border); }
+.mixtape-page .bullet { width: 10px; height: 10px; border-radius: 50%; background: var(--link-underline); margin-top: 6px; box-shadow: 0 0 0 3px var(--surface-glow); }
+.mixtape-page .track strong { color: var(--text-heading); }
+.mixtape-page .track small { color: var(--text-muted); }
+
+/* =========================
+   Polaroids (legacy block, kept tidy)
+   ========================= */
+.mixtape-page .polaroids { position: relative; display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; min-height: 340px; }
+.mixtape-page .polaroids::after { content: ''; display: block; grid-column: 1/-1; height: 6px; }
+.mixtape-page .polaroid {
+  grid-column: span 3;
+  background: var(--paper, #fff);
+  border: 1px solid var(--surface-border);
+  border-radius: 10px;
+  padding: 8px 8px 16px 8px;
+  box-shadow: var(--polaroid-shadow);
+  transform: rotate(var(--rot));
+  transition: transform .2s ease, box-shadow .2s ease;
+  position: relative;
+}
+.mixtape-page .polaroid img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.mixtape-page .caption { margin-top: 10px; text-align: center; font-size: .92rem; color: var(--text-secondary); }
+.mixtape-page .polaroid:hover { transform: rotate(0deg) scale(1.02); box-shadow: var(--card-shadow-hover); }
+.mixtape-page .polaroid .hover-cap { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; padding: 14px; background: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, .45) 100%); opacity: 0; transition: opacity .2s ease; border-radius: 10px; }
+.mixtape-page .polaroid:hover .hover-cap { opacity: 1; }
+.mixtape-page .polaroid .hover-cap span { color: #fff; font-weight: 600; letter-spacing: .3px; }
+
+/* =========================
+   Moodboard with Pins (used)
+   ========================= */
+.mixtape-page .moodboard-section {
+  background: var(--surface-card);
+  border: 2px solid var(--surface-border);
+  border-radius: var(--radius-xl, 28px);
+  padding: 32px;
+  box-shadow: var(--card-shadow);
+  position: relative;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.mixtape-page .moodboard-section::before {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border: 1px dashed color-mix(in srgb, var(--surface-border), transparent 40%);
+  border-radius: 24px;
+  pointer-events: none;
+}
+.mixtape-page .moodboard-section h2,
+.mixtape-page .moodboard-section .line { position: relative; z-index: 1; }
+
+.mixtape-page .moodboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  position: relative;
+  z-index: 1;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+/* Scale pin width responsively; snap to 150px on small as requested */
+.mixtape-page .pin-container {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(180px, 20vw, 280px);
+  min-width: 180px;
+  max-width: 280px;
+  transform: rotate(var(--rot));
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mixtape-page .pin-head {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle at 30% 30%, var(--accent-blue), color-mix(in srgb, var(--accent-blue), black 30%));
+  border-radius: 50% 50% 50% 0;
+  transform-origin: center;
+  transform: translateX(-50%) rotate(45deg);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3),
+              inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+              inset 2px 2px 4px color-mix(in srgb, var(--accent-blue), white 40%),
+              0 0 12px color-mix(in srgb, var(--accent-blue), transparent 40%);
+  z-index: 10;
+}
+.mixtape-page .pin-head::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+}
+
+.mixtape-page .pinned-photo {
+  background: var(--paper, #fff);
+  padding: 12px;
+  border-radius: 6px;
+  box-shadow: var(--card-shadow);
+  position: relative;
+  margin-top: 12px;
+  transition: all 0.3s ease;
+  border: 1px solid var(--surface-border);
+}
+.mixtape-page .pinned-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 3px;
+  object-fit: cover;
+}
+
+/* Caption */
+.mixtape-page .photo-caption {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  text-align: center;
+  font-family: var(--font-script);
+  line-height: 1.4;
+}
+
+.mixtape-page .pin-container:hover { transform: rotate(0deg) scale(1.05); z-index: 100; }
+.mixtape-page .pin-container:hover .pinned-photo { box-shadow: var(--card-shadow-hover); border-color: var(--accent-blue); }
+.mixtape-page .pin-container:hover .pin-head { transform: translateX(-50%) rotate(45deg) scale(1.1); }
+
+/* =========================
+   This or That
+   ========================= */
+.mixtape-page .this-that { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.mixtape-page .choice { position: relative; background: var(--surface-overlay); border: 1px solid var(--surface-border); border-radius: 18px; box-shadow: var(--card-shadow); padding: 16px 18px; overflow: hidden; }
+.mixtape-page .choice h3 { font-size: 1rem; color: var(--text-heading); display: flex; align-items: center; justify-content: space-between; }
+.mixtape-page .vs { margin: 10px 0; color: var(--text-muted); text-align: center; font-size: .9rem; }
+.mixtape-page .opt { display: flex; justify-content: space-between; align-items: center; background: var(--surface-card-strong); border: 1px solid var(--surface-border-strong); border-radius: 12px; padding: 10px 12px; }
+.mixtape-page .opt strong { color: var(--text-heading); }
+.mixtape-page .arrow { font-weight: 900; letter-spacing: .4px; color: var(--text-subtle); }
+
+/* =========================
+   Pill (kept; trimmed duplicates)
+   ========================= */
+.mixtape-page .pill-mini {
+  --size: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--size);
+  min-height: var(--size);
+  padding: 0 10px;
+  border-radius: 999px;
+  line-height: 1;
+  font-weight: 900;
+  font-size: 1.05rem;
+  cursor: pointer;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--surface-highlight), white 6%),
+      color-mix(in srgb, var(--surface-glow), black 4%)
+    );
+  background-color: rgb(255 255 255 / 0.06);
+  color: var(--accent-blue);
+  border: 1px solid color-mix(in srgb, var(--surface-border), white 25%);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.20) inset, 0 1px 1.5px rgb(0 0 0 / 0.06);
+  transition: background-color .2s ease, border-color .2s ease, transform .12s ease, box-shadow .2s ease;
+}
+.mixtape-page .pill-mini:hover {
+  background-color: rgb(255 255 255 / 0.10);
+  border-color: color-mix(in srgb, var(--surface-border), white 40%);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.28) inset, 0 2px 3px rgb(0 0 0 / 0.08);
+}
+.mixtape-page .pill-mini:active {
+  transform: translateY(0.5px) scale(0.98);
+  box-shadow: 0 0 0 rgb(255 255 255 / 0) inset, 0 1px 2px rgb(0 0 0 / 0.12);
+}
+.mixtape-page .pill-mini:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent-blue), white 20%);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mixtape-page .pill-mini { transition: none; }
+}
+@media (pointer: coarse) {
+  .mixtape-page .pill-mini { --size: 40px; padding: 0 12px; }
+}
+
+/* =========================
+   Responsive breakpoints
+   ========================= */
+
+/* Tablet-ish */
+@media (max-width: 1100px) {
+  .mixtape-page .music-grid { grid-template-columns: 1fr; }
+}
+
+/* Large phones / small tablets */
+@media (max-width: 900px) {
+  .mixtape-page .polaroid { grid-column: span 4; }
+  .mixtape-page .this-that { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Tight phones */
+@media (max-width: 700px) {
+  .mixtape-page h1 { font-size: 2.3rem; }
+  .mixtape-page .polaroid { grid-column: span 6; }
+  .mixtape-page .polaroids { grid-template-columns: repeat(6, 1fr); }
+  .mixtape-page .choice h3 { font-size: .96rem; }
+}
+
+/* Ultra-mobile focus: images max 150px, centered layout, compact paddings */
+@media (max-width: 600px) {
+  .mixtape-page .container { padding: 0 14px; }
+  .mixtape-page .page-header { padding-top: 36px; }
+  .mixtape-page h1 { font-size: 2rem; }
+  .mixtape-page .intro { font-size: 0.98rem; line-height: 1.7; }
+
+  .mixtape-page .section { margin: 18px 0; }
+  .mixtape-page .card { padding: 16px; }
+
+  /* Spotify frame a bit shorter on tiny screens */
+  .mixtape-page .playlist-embed .spotify-frame { height: 300px; }
+
+  /* Tracks: stack bullets and copy for better scan */
+  .mixtape-page .track { flex-direction: column; gap: 8px; padding: 10px; }
+
+  /* Moodboard: center and clamp to 150px */
+  .mixtape-page .moodboard { justify-content: center; gap: 16px; }
+  .mixtape-page .pin-container {
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+  }
+  .mixtape-page .pinned-photo img {
+    max-width: 150px;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Polaroids (if used): also clamp to 150px visuals */
+  .mixtape-page .polaroid img {
+    height: auto;
+    max-width: 150px;
+    width: 100%;
+  }
+
+  /* This-or-That: 1 column for thumb comfort */
+  .mixtape-page .this-that { grid-template-columns: 1fr; }
+}
+
+/* Super small / legacy phones */
+@media (max-width: 400px) {
+  .mixtape-page .container { padding: 0 10px; }
+  .mixtape-page h1 { font-size: 1.8rem; }
+  .mixtape-page .card { padding: 12px; }
+  .mixtape-page .moodboard-section { padding: 20px; }
+}
+/* MUSIC GRID — keep columns, do NOT stretch heights */
+/* MUSIC GRID: keep columns, do NOT stretch heights */
+.music-grid {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 26px;
+  align-items: start;
+}
+
+/* Each card is auto-height, never stretches */
+.music-grid .card {
+  height: fit-content;
+  min-height: 0;
+}
+
+/* Spotify playlist card: fully responsive, rounded */
+.playlist-embed {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 22px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--surface-border);
+  background: var(--surface-card);
+}
+
+/* Responsive IFRAME inside the card */
+.spotify-frame {
+  display: block;
+  width: 100%;
+  min-width: 200px;
+  /* Below: make the height responsive but max at 352px */
+  height: clamp(240px, 42vw, 352px);
+  border: 0;
+}
+
+/* On tablets and below: stack vertically */
+@media (max-width: 1100px) {
+  .music-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .playlist-embed, .tracks {
+    margin-bottom: 12px;
+  }
+}
+
+/* Smaller screens: slightly shorter player */
+@media (max-width: 700px) {
+  .spotify-frame {
+    height: 220px;
+  }
+}
+
+@media (max-width: 500px) {
+  .music-grid {
+    gap: 10px;
+  }
+  .playlist-embed, .tracks {
+    padding: 6px 2px;
+  }
+}
+.playlist-embed {
+  display: flex;              /* enables flexbox layout */
+  flex-direction: column;     /* in case you want vertical stack */
+  justify-content: center;    /* centers vertically */
+  align-items: center;        /* centers horizontally */
+  width: 100%;
+  min-height: 280px;          /* optional: use only if you want a min card height */
+  overflow: hidden;
+  border-radius: 22px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--surface-border);
+  background: var(--surface-card);
+}
+
+/* iframe will auto center due to flex parent! */
+.spotify-frame {
+  display: block;
+  width: 100%;
+  max-width: 480px;           /* prevents huge width on very big screens */
+  height: clamp(240px, 42vw, 352px); /* responsive height as before */
+  border: 0;
+}
+.spotify-frame {
+  width: 100%;
+  max-width: 480px;
+  height: 352px;      /* Desktop/default height – no clamp here */
+  border: 0;
+  display: block;
+}
+
+@media (max-width: 700px) {
+  .spotify-frame {
+    height: 220px;    /* A fixed, single height for short/mobile screens */
+  }
+}
+
+/* If you want it to fully follow the embed default, you can remove any height (but the Spotify UI may require a minimum) */

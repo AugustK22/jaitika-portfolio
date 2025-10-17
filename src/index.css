@@ -312,7 +312,7 @@ nav {
   width: 100%;
 }
 
-.theme-toggle {
+/* .theme-toggle {
   border: 1px solid var(--button-border);
   background: var(--button-background);
   color: var(--button-text);
@@ -325,7 +325,7 @@ nav {
   box-shadow: var(--button-shadow);
   transition: transform var(--transition-fast) ease, box-shadow var(--transition-fast) ease, background var(--transition-fast) ease, color var(--transition-fast) ease;
   font-weight: 600;
-}
+} */
 
 .theme-toggle:hover {
   transform: translateY(-2px);
@@ -355,7 +355,8 @@ nav {
 .hero-content h1 {
   font-family: var(--font-heading);
 
-  font-size: 10rem;
+  font-size: 5rem;
+  font-style: Bold;
   background: linear-gradient(90deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -514,6 +515,8 @@ h1 {
   border: 2px solid transparent;
 }
 
+
+
 .card::before {
   content: '';
   position: absolute;
@@ -632,97 +635,7 @@ footer {
   }
 }
 
-@media (max-width: 640px) {
-  .container {
-    padding: 0 20px;
-  }
-  .hero-content, .hero-image-container { backface-visibility: hidden; transform: translateZ(0); }
-
-
-  h1 {
-    font-size: 2.8rem;
-  }
-
-  .subtitle {
-    font-size: 1.3rem;
-  }
-
-  .nav-links {
-    display: none;
-  }
-
-  .nav-right {
-    gap: 16px;
-  }
-
-  .theme-toggle {
-    padding: 0.45rem 0.85rem;
-    font-size: 0.75rem;
-    letter-spacing: 0.4px;
-  }
-
-  .logo {
-    font-size: 2rem;
-  }
-
-  /* src/index.css */
-
-/* ... (keep existing code) ... */
-
-:root {
-  /* ... (keep existing variables) ... */
-  --shadow-m: 0 12px 28px rgba(0, 0, 0, 0.12);
-  --grid-max: 1400px;
-  --gutter: 40px;
-
-  /* ADD THESE NEW VARIABLES FOR THE JOURNAL PAGE (LIGHT MODE) */
-  --journal-bg-start: #fef6f0;
-  --journal-bg-mid: #fdf2f8;
-  --journal-bg-end: #f0f9ff;
-  --journal-text-bright: #2d2d2d;
-  --journal-text-main: #4a4a4a;
-  --journal-text-muted: #6b7280;
-  --journal-text-dim: #9ca3af;
-  --journal-pink: #f4b1c2;
-  --journal-pink-glow: rgba(244, 177, 194, 0.25);
-  --journal-teal: #81c6d9;
-  --journal-teal-glow: rgba(129, 198, 217, 0.22);
-  --journal-gold: #d4af37;
-  --journal-gold-glow: rgba(212, 175, 55, 0.22);
-  --journal-glass-bg: rgba(255, 255, 255, 0.65);
-  --journal-glass-border: rgba(255, 255, 255, 0.35);
-  --journal-glass-hover: rgba(255, 255, 255, 0.75);
-  --journal-shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.12);
-  --journal-shadow-heavy: 0 24px 60px rgba(0, 0, 0, 0.2);
-}
-
-body.dark-mode {
-  /* ... (keep existing variables) ... */
-  --shadow-m: 0 18px 40px rgba(5, 9, 20, 0.65);
-
-  /* ADD THESE NEW VARIABLES FOR THE JOURNAL PAGE (DARK MODE) */
-  --journal-bg-start: #0a0e1a;
-  --journal-bg-mid: #0f1420;
-  --journal-bg-end: #151923;
-  --journal-text-bright: #f8fafc;
-  --journal-text-main: #e2e8f0;
-  --journal-text-muted: #94a3b8;
-  --journal-text-dim: #64748b;
-  --journal-pink: #f4b1c2;
-  --journal-pink-glow: rgba(244, 177, 194, 0.18);
-  --journal-teal: #7dd3e8;
-  --journal-teal-glow: rgba(125, 211, 232, 0.18);
-  --journal-gold: #fbbf24;
-  --journal-gold-glow: rgba(251, 191, 36, 0.18);
-  --journal-glass-bg: rgba(17, 25, 40, 0.6);
-  --journal-glass-border: rgba(125, 211, 232, 0.18);
-  --journal-glass-hover: rgba(30, 41, 59, 0.75);
-  --journal-shadow-soft: 0 12px 48px rgba(8, 11, 23, 0.5);
-  --journal-shadow-heavy: 0 30px 70px rgba(3, 7, 18, 0.85);
-}
-
 /* ... (rest of the file remains the same) ... */
-}
 /* src/index.css */
 
 /* ... (all your existing code) ... */
@@ -905,6 +818,86 @@ html { scroll-behavior: smooth; }
   letter-spacing: .06em;
   opacity: 0.75;
 }
+/* Custom Navbar overrides for Bootstrap compatibility */
+.custom-navbar {
+  background: transparent; /* Keep your gradient/background if needed */
+  border: none;
+  box-shadow: none;
+}
 
+/* Make sure nav links inherit your color design */
+.custom-navbar .navbar-nav .nav-link {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  position: relative;
+}
 
+.custom-navbar .navbar-nav .nav-link.active,
+.custom-navbar .navbar-nav .nav-link:hover {
+  color: var(--accent-blue);
+}
+
+.custom-navbar .logoJSNavLink {
+  font-family: var(--font-script);
+  font-size: 2.5rem;
+  color: var(--accent-gold);
+  text-shadow: var(--logo-shadow);
+  cursor: pointer;
+  transition: color var(--transition-fast) ease;
+}
+
+/* Hamburger icon override (Bootstrap uses an SVG) */
+.navbar-toggler {
+  background: none !important;
+  border: none;
+  outline: none;
+}
+.navbar[data-bs-theme='light'] .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(0,0,0,0.65)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+.navbar[data-bs-theme='dark'] .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(255,255,255,0.85)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+/* Responsive tweaks */
+@media (max-width: 968px) {
+  .custom-navbar .nav-right {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+@media (max-width: 640px) {
+  .custom-navbar {
+    padding: 10px 4px;
+  }
+  .custom-navbar .logoJSNavLink {
+    font-size: 2rem;
+  }
+}
+/* 
+.theme-toggle {
+  position: fixed;
+  top: 80px;
+  right: 10px;
+  z-index: 1050; 
+  padding: 8px 16px;
+  border-radius: 4px;
+ width : 120px;
+} */
+.hero .dreamcatcher,
+.hero .star-doodle,
+.hero .image-wrapper::before,
+.hero .image-wrapper::after {
+  pointer-events: none !important;
+}
+
+/* If any hero container is absolutely positioned, keep it under the navbar */
+.hero,
+.hero-image-container,
+.ultimate-container {
+  position: relative;
+  z-index: 0;
+}
 

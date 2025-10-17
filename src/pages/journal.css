@@ -330,3 +330,61 @@ select.input option[value="freedom-post"] { color: var(--journal-gold); }
 }
 
 
+/* ====== UNIVERSAL FLUID BOX SIZING ====== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+/* ====== GLOBAL MOBILE FIRST RESET ====== */
+html {
+  font-size: 100%;
+}
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  overflow-x: hidden;
+  background: var(--journal-bg-mid);
+}
+
+.journal-page,
+.journal-page .container,
+.composer,
+.controls,
+.card,
+.notice,
+.stack,
+.gate {
+  padding-left: 5vw;
+  padding-right: 5vw;
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+
+/* ====== WIDE SCREEN ADJUSTMENTS ====== */
+/* @media (min-width: 1200px) {
+  .journal-page, .composer, .controls { max-width: 1040px; margin: 0 auto; }
+  .stack { max-width: 900px; margin: auto; }
+} */
+
+/* === TABLET BREAKPOINT ===
+@media (max-width: 900px) {
+  .journal-page, .composer, .controls, .stack { padding-left: 3vw; padding-right: 3vw; }
+} */
+
+/* === MOBILE BREAKPOINT === */
+@media (max-width: 600px) {
+  .journal-page, .composer, .controls, .gate, .notice {
+    padding-left: 2vw; padding-right: 2vw; min-width: 0; 
+  }
+  .entry, .card, .notice, .gate, .composer, .container, .stack { padding: 12px 6px !important; }
+  .row, .entry-head, .controls-row, .topbar,
+  .topbar-actions { gap: 0.5rem; }
+  .hero h1, h1 { font-size: 2rem; }
+}
+
+@media (max-width: 400px) {
+  .journal-page, .composer, .controls { padding-left: 1vw; padding-right: 1vw; }
+}

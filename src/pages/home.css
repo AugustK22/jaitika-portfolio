@@ -100,3 +100,23 @@
   overflow: hidden;
   border: 2px solid transparent;
 }
+
+@media screen and (max-width: 768px) {
+  .card {
+    width : 80%;
+    margin : 0 auto;
+  }
+
+  .hero-content h1 {
+    font-size: 3.5rem;
+  }
+  .hero-image-container img {
+    /* font-size: 1.5rem; */
+    width: 300px;
+  }
+  .belief-section {
+    /* font-size: 2rem; */
+    width: 80%;
+    margin: 0 auto;
+  }
+}

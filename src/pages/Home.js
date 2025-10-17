@@ -99,7 +99,7 @@ const Home = () => {
                 <div className="hero-image-container" ref={heroImageRef}>
                     <div className="image-wrapper">
                         <div className="polaroid-frame">
-                            <img src="https://i.ibb.co/xKJ6GYnb/JSR-1.webp" border="0" alt="Jaitika Singh Rathore" loading="eager" fetchPriority='high' decoding='async' />
+                            <img src="https://i.ibb.co/GfhCs4fr/JSR-4-1.webp" border="0" alt="Jaitika Singh Rathore" loading="eager" fetchPriority='high' decoding='async' />
                             <div className="polaroid-caption">living in the margins ✨</div>
                         </div>
                     </div>

@@ -89,7 +89,7 @@ const Home = () => {
             <section className="hero">
                 <div className="hero-content" ref={heroContentRef}>
                     <div className="greeting">Welcome to my universe</div>
-                    <h1 >Jaitika&nbsp;Singh<br />Rathore</h1>
+                    <h1 >Jaitika Singh<br />Rathore</h1>
                     <div className="subtitle">Chaotic. Dreamy. Ambitious.</div>
                     <p className="intro-text">
                         Welcome to my corner of the universe. I'm a soul who lives in the margins, turning heartbreak into poetry and chaos into something cinematic. This isn't just a website; it's a collection of <em>late-night thoughts</em>, <em>ambitious daydreams</em>, and the stories that shape me. Come on in.

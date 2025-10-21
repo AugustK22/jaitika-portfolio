@@ -6,10 +6,10 @@ import '../index.css';
 import ReflectionPanel from "../components/ReflectionPanel";
 
 
-const BACKGROUND_STAR_COUNT = 600;
-const MIDGROUND_STAR_COUNT = 320;
-const FOREGROUND_STAR_COUNT = 120;
-const DUST_PARTICLE_COUNT = 900;
+const BACKGROUND_STAR_COUNT = 1200;
+const MIDGROUND_STAR_COUNT = 600;
+const FOREGROUND_STAR_COUNT = 200;
+const DUST_PARTICLE_COUNT = 1500;
 
 function drawSkyGradient(ctx, width, height) {
   const gradient = ctx.createLinearGradient(0, 0, 0, height);

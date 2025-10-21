@@ -114,7 +114,7 @@ export default function Tracks() {
             href={t.href}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`${t.vibe || ""} ${t.title}${t.by ? " ,  " + t.by : ""} on Spotify`}
+            aria-label={`${t.vibe || ""} ${t.title}${t.by ? " — " + t.by : ""} on Spotify`}
           >
             <span className="spark-ring" aria-hidden />
             <span className="bullet" aria-hidden>
@@ -127,9 +127,9 @@ export default function Tracks() {
               </svg>
             </span>
             <div className="track-copy">
-              {t.vibe ? <strong>{t.vibe}</strong> : <strong>, </strong>}
+              {t.vibe ? <strong>{t.vibe}</strong> : <strong>—</strong>}
               <div className="title-line">
-                <small>“{t.title}”{t.by ? ` ,  ${t.by}` : ""}</small>
+                <small>“{t.title}”{t.by ? ` — ${t.by}` : ""}</small>
               </div>
             </div>
             <span className="go-chip">Play on Spotify ↗</span>

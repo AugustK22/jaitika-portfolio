@@ -146,3 +146,68 @@
     font-size: 2rem;
   }
 }
+/* Fix: center links vertically when overlay is open */
+@media (max-width: 991.98px) {
+  .navbar-collapse.show .nav-right {
+    flex-direction: column;
+    align-items: center; /* ← centers them horizontally */
+    width: 100%;
+  }
+
+  .navbar-collapse.show .nav-links {
+    flex-direction: column;
+    align-items: center; /* ← centers individual links */
+    width: 100%;
+    gap: 20px; /* optional: adds space between them */
+  }
+
+  .navbar-collapse.show .nav-links .nav-item {
+    text-align: center;
+    width: 100%;
+  }
+}
+/* Collapsed overlay: vertical list, centered items, tight hover underline */
+@media (max-width: 991.98px) {
+  .navbar-collapse.show {
+    display: flex;
+    justify-content: center;  /* centers the list block */
+    align-items: center;       /* vertical alignment when there's height */
+    text-align: center;
+  }
+
+  .navbar-collapse.show .nav-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;       /* centers each row */
+    width: 100%;
+  }
+
+  .navbar-collapse.show .nav-links {
+    display: flex;
+    flex-direction: column;    /* stacked rows */
+    align-items: center;       /* center each link horizontally */
+    gap: 20px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Key bits: don't stretch the li; make the link size to its text */
+  .navbar-collapse.show .nav-links .nav-item {
+    width: auto;               /* no full-row stretching */
+  }
+
+  .navbar-collapse.show .nav-links .nav-link {
+    display: inline-block;     /* width == text width → underline hugs text */
+  }
+}
+
+/* Keep the underline tight to the text (works with inline-block) */
+.nav-links .nav-link {
+  padding: 0;                  /* already in your CSS, keep it tight */
+}
+
+.nav-links .nav-link::after {
+  left: 0;                     /* underline starts under the first letter */
+  width: 0;                    /* grows to the link's own width (the text) */
+}

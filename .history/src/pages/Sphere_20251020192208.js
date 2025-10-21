@@ -17,10 +17,10 @@ export default function Sphere() {
             <div className="kicker">the sphere</div>
             <h1>Merging Food Technology with Creative Storytelling.</h1>
             <div className="subtitle">Chaotic · Dreamy · Ambitious ,  professionally tidy</div>
-            {/* <p className="intro">
+            <p className="intro">
               A focused, recruiter-friendly snapshot of Jaitika’s professional self. Clean sections, aligned
               timeline, and the same cozy-chaos aesthetic ,  tuned down just enough for the boardroom.
-            </p> */}
+            </p>
           </header>
 
           {/* Contact slab */}

@@ -16,11 +16,11 @@ export default function Sphere() {
           <header className="page-header" id="sphere">
             <div className="kicker">the sphere</div>
             <h1>Merging Food Technology with Creative Storytelling.</h1>
-            <div className="subtitle">Chaotic · Dreamy · Ambitious ,  professionally tidy</div>
-            {/* <p className="intro">
+            <div className="subtitle">Chaotic · Dreamy · Ambitious — professionally tidy</div>
+            <p className="intro">
               A focused, recruiter-friendly snapshot of Jaitika’s professional self. Clean sections, aligned
-              timeline, and the same cozy-chaos aesthetic ,  tuned down just enough for the boardroom.
-            </p> */}
+              timeline, and the same cozy-chaos aesthetic — tuned down just enough for the boardroom.
+            </p>
           </header>
 
           {/* Contact slab */}
@@ -79,7 +79,7 @@ export default function Sphere() {
                 <div className="tl-row">
                   <div className="tl-when">2024 – Present</div>
                   <div className="tl-body">
-                    <h3>B.Sc. in Food Technology ,  Lady Irwin College, University of Delhi</h3>
+                    <h3>B.Sc. in Food Technology — Lady Irwin College, University of Delhi</h3>
                     <div className="sub">
                       Undergraduate coursework in Food Technology; marketing-leaning projects and campus outreach.
                     </div>
@@ -94,7 +94,7 @@ export default function Sphere() {
                 <div className="tl-row">
                   <div className="tl-when">2009 – 2024</div>
                   <div className="tl-body">
-                    <h3>MBS International School ,  Dwarka Sector 11, New Delhi</h3>
+                    <h3>MBS International School — Dwarka Sector 11, New Delhi</h3>
                     <div className="sub">
                       Class XII (CBSE): <strong>89.8%</strong> · Class X (CBSE): <strong>88.8%</strong>
                     </div>
@@ -148,18 +148,18 @@ export default function Sphere() {
               <div className="line" />
               <div className="list">
                 <div className="item">
-                  <h3>Co-Head, Marketing ,  Food Technology Professional Chapter</h3>
+                  <h3>Co-Head, Marketing — Food Technology Professional Chapter</h3>
                   <p>
                     Lady Irwin College · Led content and outreach for departmental initiatives; strengthened
                     student–industry interface.
                   </p>
                 </div>
                 <div className="item">
-                  <h3>Social Media Dept. Member ,  Nrityanjali (ICFW Dance Society)</h3>
+                  <h3>Social Media Dept. Member — Nrityanjali (ICFW Dance Society)</h3>
                   <p>Curated posts, covered events, and amplified cultural programming for campus audiences.</p>
                 </div>
                 <div className="item">
-                  <h3>PR Team Member ,  SPICMACAY, LIC Chapter</h3>
+                  <h3>PR Team Member — SPICMACAY, LIC Chapter</h3>
                   <p>Supported communication for heritage arts events; community engagement and event promotion.</p>
                 </div>
               </div>
@@ -187,8 +187,8 @@ export default function Sphere() {
                 <div className="item">
                   <h3>Languages</h3>
                   <p>
-                    <span className="badge">Hindi ,  Well versed</span>
-                    <span className="badge">English ,  Well versed</span>
+                    <span className="badge">Hindi — Well versed</span>
+                    <span className="badge">English — Well versed</span>
                   </p>
                 </div>
               </div>
@@ -201,7 +201,7 @@ export default function Sphere() {
               Seeking internships to bring innovative marketing strategies to the food technology industry.
             </h3>
             <p>
-              Let’s connect if you’re building brands with taste ,  and want someone who can translate labs,
+              Let’s connect if you’re building brands with taste — and want someone who can translate labs,
               labels, and logistics into stories people actually care about.
             </p>
             <div className="actions">

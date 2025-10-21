@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-// import FairyLights from "../components/FairyLights";
 import Footer from "../components/Footer";
 import "./mixtape.css";
 import Tracks from "../components/Tracks";
 
-// --- Firebase (modular SDK) with graceful fallback like Journal ---
+// Firebase imports with graceful fallback
 let initializeApp, getDatabase, ref, onValue, getApps;
 try {
   ({ initializeApp, getApps } = await import("firebase/app"));
@@ -27,217 +26,238 @@ const firebaseConfig = {
   measurementId: "G-TCGW4B73F5",
 };
 
-const ROT = [-6, -3, -1, 2, 4, 5];
+const ROTATIONS = [-6, -3, -1, 2, 4, 5];
 
 export default function Mixtape() {
   const [photos, setPhotos] = useState([]);
-  const [phErr, setPhErr] = useState("");
+  const [photoError, setPhotoError] = useState("");
+
+  // Handle Spotify iframe responsive resize
+  useEffect(() => {
+    const handleSpotifyResize = () => {
+      const iframe = document.querySelector('.playlist-frame');
+      if (iframe) {
+        const parentWidth = iframe.parentElement.offsetWidth;
+        const newHeight = parentWidth + 80; // Spotify's recommended ratio
+        iframe.style.width = `${parentWidth}px`;
+        iframe.style.height = `${newHeight}px`;
+        // Force reload to apply new layout
+        const src = iframe.src;
+        iframe.src = src;
+      }
+    };
+
+    // Initial sizing
+    handleSpotifyResize();
+
+    // Resize listener with debounce
+    let resizeTimer;
+    const debouncedResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(handleSpotifyResize, 250);
+    };
+
+    window.addEventListener('resize', debouncedResize);
+    return () => {
+      window.removeEventListener('resize', debouncedResize);
+      clearTimeout(resizeTimer);
+    };
+  }, []);
 
   useEffect(() => {
     let db;
     try {
       if (!initializeApp) throw new Error("Firebase SDK not found");
-      const app =
-        (getApps && getApps().length && getApps()[0]) ||
-        initializeApp(firebaseConfig);
+      const app = (getApps && getApps().length && getApps()[0]) || initializeApp(firebaseConfig);
       db = getDatabase(app);
     } catch (e) {
-      console.error("Firebase init (Mixtape) error:", e);
-      setPhErr("Photos offline.");
+      console.error("Firebase init error:", e);
+      setPhotoError("Photos temporarily offline.");
       return;
     }
 
-    // Listen to /db/mixtape/photos where items are { url, note, addedAt }
     const photosRef = ref(db, "db/mixtape/photos");
-
-    const unsub = onValue(
+    const unsubscribe = onValue(
       photosRef,
-      (snap) => {
-        if (!snap.exists()) {
+      (snapshot) => {
+        if (!snapshot.exists()) {
           setPhotos([]);
           return;
         }
-        const obj = snap.val() || {};
-        const list = Object.values(obj)
-          .map((row) => ({
-            src: String(row?.url ?? ""),
-            caption: String(row?.note ?? ""),
-            addedAt: Number(row?.addedAt ?? 0),
+        const data = snapshot.val() || {};
+        const photoList = Object.values(data)
+          .map((item) => ({
+            src: String(item?.url ?? ""),
+            caption: String(item?.note ?? ""),
+            addedAt: Number(item?.addedAt ?? 0),
           }))
           .filter((p) => /^https?:\/\//i.test(p.src))
-          .sort((a, b) => b.addedAt - a.addedAt) // newest first
-          .map(({ addedAt, ...rest }) => rest); // drop addedAt for UI
-        setPhotos(list);
+          .sort((a, b) => b.addedAt - a.addedAt)
+          .map(({ addedAt, ...rest }) => rest);
+        setPhotos(photoList);
       },
-      (err) => {
-        console.error("Photos fetch error:", err);
-        setPhErr("Couldn’t fetch photos.");
+      (error) => {
+        console.error("Photos fetch error:", error);
+        setPhotoError("Couldn't load photos.");
       }
     );
-    return () => typeof unsub === "function" && unsub();
+    return () => typeof unsubscribe === "function" && unsubscribe();
   }, []);
 
   return (
     <>
-      {/* <FairyLights /> */}
-
       <main className="mixtape-page">
         <div className="container">
           {/* Header */}
           <header className="page-header">
             <div className="kicker">the mixtape</div>
             <h1>My Simple Pleasures.</h1>
-            <div className="subtitle">
-              Chaotic · Dreamy · Ambitious — cozy on purpose
-            </div>
+            <div className="subtitle">Chaotic · Dreamy · Ambitious · Cozy on purpose</div>
             <p className="intro">
-              A messy, warm little room on the internet. Music to time-travel
-              with, polaroids that refuse to sit straight, and tiny decisions
-              that say a lot.
+              A messy, warm little room on the internet. Music to time-travel with, polaroids that
+              refuse to sit straight, and tiny decisions that say a lot.
             </p>
           </header>
 
-          {/* MUSIC */}
-          {/* MUSIC */}
-<section className="section" aria-label="Music">
-  <h2>A Soundtrack for the Soul.</h2>
-  <div className="line" />
+          {/* Music Section */}
+          <section className="section music-section" aria-label="Music">
+            <h2>A Soundtrack for the Soul.</h2>
+            <div className="line" />
 
-  <div className="music-grid">
-    {/* Playlist gets its own card */}
-    <div className="playlist-embed card" role="group" aria-label="Spotify playlist">
-      <iframe
-        className="spotify-frame"
-        src="https://open.spotify.com/embed/playlist/320Mu0SXXYHQ9CsyC28V9e?utm_source=generator&theme=0"
-        width="100%"
-        height="352"
-        frameBorder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"
-        title="Spotify Playlist Embed"
-        referrerPolicy="strict-origin-when-cross-origin"
-      />
-    </div>
+            <div className="music-grid">
+              {/* Spotify Playlist */}
+              <div className="playlist-card">
+                <iframe
+                  className="playlist-frame"
+                  src="https://open.spotify.com/embed/playlist/320Mu0SXXYHQ9CsyC28V9e?utm_source=generator&theme=0"
+                  frameBorder="0"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                  title="Spotify Playlist"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                />
+              </div>
 
-    {/* Tracks get their own card */}
-    <div className="tracks card">
-      <Tracks />
-    </div>
-  </div>
-</section>
+              {/* Tracks */}
+              <div className="tracks-card card">
+                <Tracks />
+              </div>
+            </div>
+          </section>
 
-
-          {/* MOOD BOARD GALLERY (Firebase-driven) */}
+          {/* Photo Gallery */}
           <section className="section moodboard-section" aria-label="Photo Gallery">
             <h2>Little things I keep like seashells.</h2>
             <div className="line" />
 
-            {phErr && (
-              <div className="muted" style={{ marginBottom: "16px", textAlign: "center" }}>
-                {phErr}
-              </div>
-            )}
+            {photoError && <div className="error-message">{photoError}</div>}
 
             <div className="moodboard">
-              {(photos.length ? photos : []).map((p, i) => (
+              {photos.length === 0 && !photoError && (
+                <div className="empty-state">No photos yet...</div>
+              )}
+              {photos.map((photo, index) => (
                 <div
-                  key={`${p.src}-${i}`}
+                  key={`${photo.src}-${index}`}
                   className="pin-container"
-                  style={{ "--rot": `${ROT[i % ROT.length]}deg` }}
+                  style={{ "--rot": `${ROTATIONS[index % ROTATIONS.length]}deg` }}
                 >
-                  <div className="pin-head"></div>
+                  <div className="pin-head" />
                   <figure className="pinned-photo">
                     <img
-                      src={p.src}
-                      alt={p.caption ? p.caption : `Memory ${i + 1}`}
+                      src={photo.src}
+                      alt={photo.caption || `Memory ${index + 1}`}
                       loading="lazy"
                       decoding="async"
                     />
-                    {p.caption && (
-                      <figcaption className="photo-caption">
-                        {p.caption}
-                      </figcaption>
-                    )}
+                    {photo.caption && <figcaption className="photo-caption">{photo.caption}</figcaption>}
                   </figure>
                 </div>
               ))}
             </div>
           </section>
 
-          {/* THIS OR THAT */}
-          <section className="section card" aria-label="This or That">
+          {/* This or That */}
+          <section className="section card this-that-section" aria-label="Preferences">
             <h2>This or That</h2>
             <div className="line" />
-            <div className="this-that">
+
+            <div className="choices-grid">
               <div className="choice">
                 <h3>
-                  <span>Cold Coffee</span>{" "}
-                  <span className="pill-mini">&gt;</span>{" "}
+                  <span>Cold Coffee</span>
+                  <span className="pill-mini" aria-label="versus">&gt;</span>
                   <span>Hot Coffee</span>
                 </h3>
                 <div className="vs">picking the chill</div>
-                <div className="opt">
+                <div className="winner">
                   <strong>Winner:</strong>
-                  <span className="arrow">Cold Coffee</span>
+                  <span className="winner-text">Cold Coffee</span>
                 </div>
               </div>
+
               <div className="choice">
                 <h3>
-                  <span>Sunrise</span>{" "}
-                  <span className="pill-mini">&gt;</span>{" "}
+                  <span>Sunrise</span>
+                  <span className="pill-mini" aria-label="versus">&gt;</span>
                   <span>Sunset</span>
                 </h3>
                 <div className="vs">hope &gt; nostalgia</div>
-                <div className="opt">
+                <div className="winner">
                   <strong>Winner:</strong>
-                  <span className="arrow">Sunrise</span>
+                  <span className="winner-text">Sunrise</span>
                 </div>
               </div>
+
               <div className="choice">
                 <h3>
-                  <span>Oceans</span>{" "}
-                  <span className="pill-mini">&gt;</span>{" "}
+                  <span>Oceans</span>
+                  <span className="pill-mini" aria-label="versus">&gt;</span>
                   <span>Mountains</span>
                 </h3>
                 <div className="vs">tide over pride</div>
-                <div className="opt">
+                <div className="winner">
                   <strong>Winner:</strong>
-                  <span className="arrow">Oceans</span>
+                  <span className="winner-text">Oceans</span>
                 </div>
               </div>
+
               <div className="choice">
                 <h3>
-                  <span>Spontaneous</span>{" "}
-                  <span className="pill-mini">&gt;</span>{" "}
+                  <span>Spontaneous</span>
+                  <span className="pill-mini" aria-label="versus">&gt;</span>
                   <span>Planned</span>
                 </h3>
                 <div className="vs">chaos dressed well</div>
-                <div className="opt">
+                <div className="winner">
                   <strong>Winner:</strong>
-                  <span className="arrow">Spontaneous</span>
+                  <span className="winner-text">Spontaneous</span>
                 </div>
               </div>
+
               <div className="choice">
                 <h3>
-                  <span>Texting</span>{" "}
-                  <span className="pill-mini">&gt;</span>{" "}
+                  <span>Texting</span>
+                  <span className="pill-mini" aria-label="versus">&gt;</span>
                   <span>Calling</span>
                 </h3>
                 <div className="vs">poems over pauses</div>
-                <div className="opt">
+                <div className="winner">
                   <strong>Winner:</strong>
-                  <span className="arrow">Texting</span>
+                  <span className="winner-text">Texting</span>
                 </div>
               </div>
+
               <div className="choice">
                 <h3>
-                  <span>Savoury</span>{" "}
-                  <span className="pill-mini">&gt;</span> <span>Sweet</span>
+                  <span>Savoury</span>
+                  <span className="pill-mini" aria-label="versus">&gt;</span>
+                  <span>Sweet</span>
                 </h3>
                 <div className="vs">salt before sugar</div>
-                <div className="opt">
+                <div className="winner">
                   <strong>Winner:</strong>
-                  <span className="arrow">Savoury</span>
+                  <span className="winner-text">Savoury</span>
                 </div>
               </div>
             </div>

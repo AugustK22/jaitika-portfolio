@@ -89,7 +89,7 @@ const Home = () => {
             <section className="hero">
                 <div className="hero-content" ref={heroContentRef}>
                     <div className="greeting">Welcome to my universe</div>
-                    <h1 >Jaitika&nbsp;Singh<br />Rathore</h1>
+                    <h1 >Jaitika Singh<br />Rathore</h1>
                     <div className="subtitle">Chaotic. Dreamy. Ambitious.</div>
                     <p className="intro-text">
                         Welcome to my corner of the universe. I'm a soul who lives in the margins, turning heartbreak into poetry and chaos into something cinematic. This isn't just a website; it's a collection of <em>late-night thoughts</em>, <em>ambitious daydreams</em>, and the stories that shape me. Come on in.
@@ -114,7 +114,7 @@ const Home = () => {
                 <div className="card" onClick={() => navigate('/blueprint')}>
                     <span className="card-icon">📖</span>
                     <h3>The Blueprint</h3>
-                    <p>A glimpse into who I am ,  the chaotic soul wrapped in fairy lights and ambitious dreams.</p>
+                    <p>A glimpse into who I am — the chaotic soul wrapped in fairy lights and ambitious dreams.</p>
                     <div className="card-quote">"I'm exceptionally good at giving love to people"</div>
                 </div>
                 <div className="card" onClick={() => navigate('/journal')}>
@@ -126,13 +126,13 @@ const Home = () => {
                 <div className="card" onClick={() => navigate('/sphere')}>
                     <span className="card-icon">✨</span>
                     <h3>The Sphere</h3>
-                    <p>Where ambition meets creativity ,  my professional journey in food technology and marketing.</p>
+                    <p>Where ambition meets creativity — my professional journey in food technology and marketing.</p>
                     <div className="card-quote">"Chaotic, dreamy, and ambitious"</div>
                 </div>
                 <div className="card" onClick={() => navigate('/mixtape')}>
                     <span className="card-icon">🎵</span>
                     <h3>The Mixtape</h3>
-                    <p>A collection of little things that make me, me ,  from Vienna by Billy Joel to cold coffee at sunrise.</p>
+                    <p>A collection of little things that make me, me — from Vienna by Billy Joel to cold coffee at sunrise.</p>
                     <div className="card-quote">"Roslyn by Bon Iver on a quiet rainy day"</div>
                 </div>
             </section>
@@ -140,7 +140,7 @@ const Home = () => {
             <section className="belief-section">
                 <h2>I live by</h2>
                 <p className="belief-text">
-                    <span>Everything happens for a reason.</span> Whatever is yours will come to you, and if it doesn't, it's still yours. And whatever is not yours, it will leave ,  sooner or later.
+                    <span>Everything happens for a reason.</span> Whatever is yours will come to you, and if it doesn't, it's still yours. And whatever is not yours, it will leave — sooner or later.
                 </p>
             </section>
             </div>

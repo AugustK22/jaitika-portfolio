@@ -6,7 +6,7 @@ import App from './App';
 import { LoadingProvider } from './components/loading';
 import Preloader from './components/Preloader';
 
-// Best guess hero URL ,  keep this the same as in Home.js
+// Best guess hero URL — keep this the same as in Home.js
 const HERO_URL = 'https://i.ibb.co/xKJ6GYnb/JSR-1.webp';
 
 // Prewarm hero into the cache before React does anything.

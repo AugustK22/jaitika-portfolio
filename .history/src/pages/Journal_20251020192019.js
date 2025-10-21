@@ -6,10 +6,10 @@ import '../index.css';
 import ReflectionPanel from "../components/ReflectionPanel";
 
 
-const BACKGROUND_STAR_COUNT = 600;
-const MIDGROUND_STAR_COUNT = 320;
-const FOREGROUND_STAR_COUNT = 120;
-const DUST_PARTICLE_COUNT = 900;
+const BACKGROUND_STAR_COUNT = 1200;
+const MIDGROUND_STAR_COUNT = 600;
+const FOREGROUND_STAR_COUNT = 200;
+const DUST_PARTICLE_COUNT = 1500;
 
 function drawSkyGradient(ctx, width, height) {
   const gradient = ctx.createLinearGradient(0, 0, 0, height);
@@ -642,7 +642,7 @@ export default function Journal() {
           <h1>Late Night Thoughts</h1>
           <p className="tagline">where vulnerability lives and hearts speak</p>
           <p className="lede">
-            This is where I write at 2 AM when the world is quiet and my heart is too loud. Unfiltered pieces of me, 
+            This is where I write at 2 AM when the world is quiet and my heart is too loud. Unfiltered pieces of me—
             the breakdowns, the breakthroughs, the tiny pivots that change everything.
           </p>
         </header>

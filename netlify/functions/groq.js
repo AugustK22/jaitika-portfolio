@@ -1,73 +1,108 @@
 // netlify/functions/groq.js
-const Groq = require("groq-sdk");
+// Robust forwarder to Groq with helpful diagnostics
+let fetchFn = global.fetch;
+async function ensureFetch() {
+  if (fetchFn) return fetchFn;
+  // Try dynamic import of node-fetch v2 for CommonJS envs
+  const mod = await import('node-fetch');
+  fetchFn = mod.default || mod;
+  return fetchFn;
+}
+
+const GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
+
+const SYSTEM_PROMPT = `You are an ideal journal companion -- part philosopher, part mirror, part poet. Your purpose is to sit beside the writer's thoughts, not to fix them.
+You do not coach, lecture, or advise directly. Instead, you reflect, explore, and deepen whatever the writer shares. Your tone is gentle but honest, empathetic but never pitying, and always rooted in curiosity and wisdom rather than solutions.`.trim();
 
 exports.handler = async function (event) {
+  const CORS_HEADERS = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS, GET",
+  };
+
   try {
-    // Only accept POST
-    if (event.httpMethod !== "POST") {
-      return { statusCode: 405, body: "Method Not Allowed" };
+    if (event.httpMethod === "OPTIONS") {
+      return { statusCode: 204, headers: CORS_HEADERS, body: "" };
     }
 
-    const body = event.body ? JSON.parse(event.body) : {};
+    if (event.httpMethod !== "POST") {
+      return { statusCode: 405, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: "Method Not Allowed" }) };
+    }
+
+    // Parse body
+    let body;
+    try {
+      body = event.body ? JSON.parse(event.body) : {};
+    } catch (e) {
+      return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: "Invalid JSON body", detail: e.message }) };
+    }
+
     const entryText = body.entryText;
     if (!entryText || !entryText.trim()) {
-      return { statusCode: 400, body: JSON.stringify({ ok: false, error: "entryText required" }) };
+      return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: "entryText required" }) };
     }
 
-    // Compose the same payload you used on client
+    const apiKey = process.env.GROQ_API_KEY;
+    // Defensive checks and masked logging for debugging
+    if (!apiKey) {
+      console.error("GROQ_API_KEY missing in env");
+      return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: "Server misconfigured: missing GROQ_API_KEY" }) };
+    }
+
+    if (!GROQ_ENDPOINT || typeof GROQ_ENDPOINT !== "string" || !GROQ_ENDPOINT.startsWith("http")) {
+      console.error("Invalid GROQ_ENDPOINT:", GROQ_ENDPOINT);
+      return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: "Server misconfigured: invalid GROQ_ENDPOINT", endpoint: GROQ_ENDPOINT }) };
+    }
+
+    // Build payload like the client did
     const payload = {
       model: "llama-3.3-70b-versatile",
       temperature: 0.85,
       top_p: 0.85,
       max_tokens: 600,
       messages: [
-        { role: "system", content: `You are an ideal journal companion -- part philosopher, part mirror, part poet. Your purpose is to sit beside the writer's thoughts, not to fix them.
-You do not coach, lecture, or advise directly. Instead, you reflect, explore, and deepen whatever the writer shares. Your tone is gentle but honest, empathetic but never pitying, and always rooted in curiosity and wisdom rather than solutions.
-
-When responding:
-- Reflect their feelings back in new words, so they feel seen and understood.
-- Offer subtle perspectives and questions that invite deeper thought, but never tell them what to do.
-- Occasionally weave in timeless truths, metaphors, or philosophical fragments -- not as commands, but as thoughts to sit with.
-- Embrace complexity and contradiction. If their feelings are messy, do not tidy them up -- hold the mess with them.
-- Avoid generic self-help tones. Speak like a thoughtful friend who listens deeply and responds with soul rather than strategy.
-
-Response style:
-- Write in a calm, lyrical, reflective voice.
-- Use language that feels like it belongs in a journal -- intimate, slow, and thoughtful.
-- Responses must stay under 500 words, ideally around 300 words.
-
-Above all, be the kind of presence that makes them want to write more, not less.` },
-        { role: "user", content: entryText }
-      ]
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: entryText },
+      ],
     };
 
-    const apiKey = process.env.GROQ_API_KEY;
-    if (!apiKey) {
-      return { statusCode: 500, body: JSON.stringify({ ok: false, error: "Server misconfigured: missing GROQ_API_KEY" }) };
+    // Use fetch (native or node-fetch)
+    const fetch = await ensureFetch();
+
+    // Mask key display for logs
+    const maskedKey = apiKey.length > 8 ? `${apiKey.slice(0,4)}...${apiKey.slice(-4)}` : "****";
+
+    console.log("Forwarding to GROQ_ENDPOINT:", GROQ_ENDPOINT);
+    console.log("Has GROQ_API_KEY:", !!apiKey, "masked:", maskedKey);
+    console.log("Payload preview:", { model: payload.model, tokens: payload.max_tokens });
+
+    const resp = await fetch(GROQ_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify(payload),
+      // Node-fetch v2 does not support 'timeout' in options; avoid using it here for portability
+    });
+
+    const text = await resp.text();
+    let data;
+    try { data = JSON.parse(text); } catch (e) { data = { ok: false, rawText: text }; }
+
+    console.log("Groq status:", resp.status);
+
+    if (!resp.ok) {
+      console.error("Groq error body:", data);
+      return { statusCode: resp.status, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, status: resp.status, error: data }) };
     }
 
-    const groq = new Groq({ apiKey });
+    // Success — return the whole Groq response as `data`
+    return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, data }) };
 
-    // groq-sdk method to create chat completions depends on SDK — if you used fetch previously:
-    const resp = await groq.createChatCompletion?.call?.(groq, payload)
-      // fallback to fetch-style API if SDK exposes fetch:
-      || await groq.fetch?.(payload);
-
-    // Normalize response (try common shapes)
-    const data = resp?.data ?? resp;
-    const reflection = data?.choices?.[0]?.message?.content ?? data?.choices?.[0]?.text ?? null;
-
-    if (!reflection) {
-      return { statusCode: 502, body: JSON.stringify({ ok: false, error: "No reflection returned" }) };
-    }
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ ok: true, reflection: reflection.trim() }),
-      headers: { "Content-Type": "application/json" },
-    };
   } catch (err) {
-    console.error("Groq proxy error:", err);
-    return { statusCode: 500, body: JSON.stringify({ ok: false, error: err.message }) };
+    console.error("Function threw:", err && (err.stack || err.message || err));
+    return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ ok: false, error: err.message || String(err) }) };
   }
 };

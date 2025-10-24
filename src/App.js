@@ -11,12 +11,12 @@ import { useThemeManager } from './hooks/useThemeManager';
 
 
 
-import useLenis from './hooks/useLenis';
+// import useLenis from './hooks/useLenis';
 // import React, { Suspense, lazy } from 'react';
 // 
 // Import Components
 import Navbar from './components/Navbar';
-import FairyLights from './components/FairyLights';
+// import FairyLights from './components/FairyLights';
 
 // Import Pages
 const Home = lazy(() => import('./pages/Home'));
@@ -24,6 +24,7 @@ const Blueprint = lazy(() => import('./pages/Blueprint'));
 const Journal = lazy(() => import('./pages/Journal'));
 const Mixtape = lazy(() => import('./pages/Mixtape'));
 const Sphere = lazy(() => import('./pages/Sphere'));
+const Links = lazy(() => import('./pages/Links'));
 
 function App() {
   // <Helmet>
@@ -82,6 +83,7 @@ function App() {
               </>
             }
           />
+          <Route path="/links" element={<Links theme={theme} onToggleTheme={toggleTheme} />} />
         </Routes>
         </Suspense>
       </div>

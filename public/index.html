@@ -16,6 +16,9 @@
 <link rel="preload" as="image" href="hhttps://i.ibb.co/GfhCs4fr/JSR-4-1.webp">
 <link rel="prefetch" href="https://i.ibb.co/GfhCs4fr/JSR-4-1.webp" as="image">
 <link rel="preload" as="image" href="https://i.ibb.co/GfhCs4fr/JSR-4-1.webp" imagesrcset="https://i.ibb.co/GfhCs4fr/JSR-4-1.webp" fetchpriority="high">
+<link rel="preload" as="image" href="https://i.ibb.co/393Vrtt8/Whats-App-Image-2025-10-24-at-21-27-36-e24cf0ec.webp">
+<link rel="prefetch" href="https://i.ibb.co/393Vrtt8/Whats-App-Image-2025-10-24-at-21-27-36-e24cf0ec.webp" as="image">
+<link rel="preload" as="image" href="https://i.ibb.co/393Vrtt8/Whats-App-Image-2025-10-24-at-21-27-36-e24cf0ec.webp" imagesrcset="https://i.ibb.co/393Vrtt8/Whats-App-Image-2025-10-24-at-21-27-36-e24cf0ec.webp" fetchpriority="high">
 
 
     
@@ -51,8 +54,28 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Jaitika Singh</title>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
   </head>
   <body>
+    <script>
+      (function () {
+        try {
+          var redirect = sessionStorage.getItem('spa-redirect');
+          if (redirect) {
+            sessionStorage.removeItem('spa-redirect');
+            var current =
+              window.location.pathname +
+              window.location.search +
+              window.location.hash;
+            if (redirect !== current) {
+              window.history.replaceState(null, '', redirect);
+            }
+          }
+        } catch (err) {
+          console.warn('SPA redirect recovery skipped', err);
+        }
+      })();
+    </script>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--

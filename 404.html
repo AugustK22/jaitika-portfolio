@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting…</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="refresh" content="0; url=/" />
+    <script>
+      (function () {
+        var l = window.location;
+        var redirectPath =
+          l.pathname.replace(/^\//, '') + l.search + l.hash;
+        if (redirectPath && redirectPath !== '/') {
+          sessionStorage.setItem('spa-redirect', '/' + redirectPath);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Redirecting…</p>
+  </body>
+</html>
